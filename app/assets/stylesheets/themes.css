@@ -1,0 +1,22 @@
+/*
+ *= require jquery.jgrowl
+ *= require_self
+*/
+
+.fullwidth{
+    width: 98%;
+}
+#jsTree li a {
+    background: none;
+    border: none;
+    display: inline;
+    padding: 0;
+}
+#jsTree li {
+    margin-top: 0;
+}
+
+#jsTree ul {
+    margin: 0;
+    padding: 0;
+}

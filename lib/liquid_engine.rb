@@ -1,20 +1,20 @@
 require 'refinerycms-core'
 require 'spree_core'
+require 'editable'
+require 'hash'
 
-module Refinery
-  module LiquidEngine
-    require 'liquid_engine/engine'
+module LiquidEngine
+  require 'liquid_engine/engine'
 
-    class << self
-      attr_writer :root
+  class << self
+    attr_writer :root
 
-      def root
-        @root ||= Pathname.new(File.expand_path('../../../', __FILE__))
-      end
+    def root
+      @root ||= Pathname.new(File.expand_path('../../../', __FILE__))
+    end
 
-      def factory_paths
-        @factory_paths ||= [ root.join('spec', 'factories').to_s ]
-      end
+    def factory_paths
+      @factory_paths ||= [ root.join('spec', 'factories').to_s ]
     end
   end
 end

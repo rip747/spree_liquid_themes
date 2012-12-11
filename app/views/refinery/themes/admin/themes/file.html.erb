@@ -1,0 +1,16 @@
+<form method="post" id="form_for_file" enctype="multipart/form-data" class="edit_file"
+      action="<%= save_file_themes_admin_themes_url %>" accept-charset="UTF-8">
+    <div style="margin: 0pt; padding: 0pt; display: inline;">
+        <input type="hidden" value="✓" name="utf8">
+        <input type="hidden" value="<%= @file %>" name="file_name">
+        <%= token_tag(nil) %>
+    </div>
+    <textarea cols="20" rows="20" id="file_content" name="file_content" class="fullwidth"><%= @content %></textarea>
+</form>
+
+<p class="submit">
+    <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
+    <input type="submit" value="Сохранить" name="commit" id="file_submit">
+</p>
+
+<%#= codemirror_edit @content_type, 'form.form_for_file', 'file_content' %>

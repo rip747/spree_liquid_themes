@@ -1,0 +1,11 @@
+<% content_for :body do %>
+  <ul id="themes">
+    <% @themes.each do |theme| %>
+      <li>
+        <%= link_to theme.name, refinery.themes_theme_path(theme) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render '/refinery/content_page' %>
