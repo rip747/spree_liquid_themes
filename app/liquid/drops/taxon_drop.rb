@@ -8,11 +8,3 @@ class TaxonDrop < Cms::BaseDrop
   end
 
 end
-
-class ProductsDrop < Clot::BaseDrop
-
-  def active
-    @source.products.active.uniq
-  end
-
-end

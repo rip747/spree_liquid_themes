@@ -1,9 +1,16 @@
-class PageDrop < Cms::BaseDrop
+class Refinery::PageDrop < Cms::BaseDrop
 
-  liquid_attributes.push(*[:link_url, :parts])
+  class_attribute :liquid_attributes
+  self.liquid_attributes =  [:created_at, :updated_at, :id, :slug, :parts]
 
-  def initialize(source)
-    super
+  def initialize(source, options = {})
+    super source
+    @options ||= options
   end
+
+  #TODO
+  #def part_by_key(key)
+  #  @source.parts.find_by_key key
+  #end
 
 end

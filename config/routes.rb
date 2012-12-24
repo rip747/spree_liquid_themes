@@ -2,7 +2,9 @@ Refinery::Core::Engine.routes.append do
 
   # Frontend routes
   namespace :themes do
-    resources :themes, :path => '', :only => [:index, :show]
+    resources :themes, :path => '' do
+
+    end
   end
 
   # Admin routes

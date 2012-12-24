@@ -39,16 +39,12 @@ module Cms
   class BaseDrop < Liquid::Drop
     extend DropAssociation
 
-    class_attribute :liquid_attributes => []
-    #write_inheritable_attribute :liquid_attributes, []
-    #self.liquid_attributes = []
-
     attr_reader :source
     delegate :hash, :to => :source
 
     def initialize(source)
       @source = source
-      @liquid = liquid_attributes.inject({}) { |h, k| h.update k.to_s => @source.send(k) }
+      @liquid = liquid_attributes.inject({}) { |h, k| h.update(k.to_s => @source.send(k)); h }
     end
 
     def before_method(method)
@@ -90,9 +86,6 @@ module Cms
       @source.errors
     end
 
-    def collection_label
-      "label field"
-    end
 
     def self.method_missing(symbol, *args)
       [symbol]

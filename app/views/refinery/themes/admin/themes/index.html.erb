@@ -1,20 +1,17 @@
 <% content_for :javascripts do %>
     <%= javascript_include_tag "/assets/themes" %>
 <% end %>
-
 <% content_for :stylesheets do %>
     <%= stylesheet_link_tag '/assets/themes' %>
 <% end %>
-
 <section id='records'>
   <%#= render 'records' %>
-  <div id="file-content"><h3><%= t('cms.select_for_editing') %></h3></div>
+  <div class="fullwidth" id="code"></div>
 </section>
 
 <aside id='actions'>
   <%= render 'actions' %>
 </aside>
-
 
 <%#= render '/refinery/admin/make_sortable', :tree => false if !searching? and ::Refinery::Themes::Admin::ThemesController.sortable? and ::Refinery::Themes::Theme.count > 1 %>
 

@@ -33,8 +33,9 @@ class @FilesManager
       data: $.param($("#form_for_file").serializeArray())
       dataType: "html"
       success: (D) ->
-        $("#spinner").hide()
-        $("#file_submit").show()
-        $("#file_content").html(D)
+        #$("#spinner").hide()
+        #$("#file_submit").show()
+        $("#code").html(D)
+        FilesManager.initHandlers()
         $.jGrowl "File successfully saved!",
           life: 5000

@@ -16,9 +16,9 @@ module Refinery
           @file = Rails.root.join("themes/#{params[:fullpath]}")
           render :text => 'file not found' and return unless File.exist? @file
           @content = File.read(@file)
-          @content_type = Editable.content_type @file
+          @content_type = Editable.mime_for @file
 
-          if @content_type == 'image'
+          if @mime_for == 'image'
             render :inline => "<%= image_tag '/themes/#{params[:fullpath]}' %>"
           else
             render :layout => false
@@ -28,6 +28,7 @@ module Refinery
         def save_file
           @file = params[:file_name]
           @content = FileManager.save_file(params[:file_name], params[:file_content])
+          @mime_for = Editable.mime_for @file
           render :template => 'refinery/themes/admin/themes/file.html.erb', :layout => false
         end
 

@@ -2,31 +2,34 @@ module Refinery
   module Themes
     class ThemesController < ::ApplicationController
 
-      before_filter :find_all_themes
-      before_filter :find_page
+      caches_page :image, :javascript, :stylesheet
 
-      def index
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @theme in the line below:
-        present(@page)
+      def image
+        render_theme_item(@theme.image(params[:file_path]), params[:format])
       end
 
-      def show
-        @theme = Theme.find(params[:id])
-
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @theme in the line below:
-        present(@page)
+      def javascript
+        render_theme_item(@theme.javascript(params[:file_path]), params[:format])
       end
 
-    protected
-
-      def find_all_themes
-        @themes = Theme.order('position ASC')
+      def stylesheet
+        render_theme_item(@theme.stylesheet(params[:file_path]), params[:format])
       end
 
-      def find_page
-        @page = ::Refinery::Page.where(:link_url => "/themes").first
+      private
+
+      def build_theme
+        @theme ||= Theme.new params[:theme_id]
+      end
+
+      def render_theme_item(file_path, format)
+        if File.exists?("#{file_path}.#{format}")
+          file_type = Mime::Type.lookup_by_extension(File.extname("#{file_path}.#{format}")[1..-1])
+          #send_data "#{file_path}.#{format}", :type => file_type, :disposition => "inline", :stream => false
+          send_data IO.read("#{file_path}.#{format}"), :type => file_type, :disposition => "inline", :stream => false
+        else
+          render :text => "Not Found", :status => 404
+        end
       end
 
     end

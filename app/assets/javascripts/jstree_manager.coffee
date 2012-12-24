@@ -1,3 +1,5 @@
+#= require jstree/jquery.jstree
+
 class @JstreeManager
   constructor: ->
     @tree = $("#jsTree")
@@ -48,13 +50,12 @@ class @JstreeManager
           type: "POST"
           url: "/refinery/themes/file"
           beforeSend: (request) ->
-
+            return true
           data:
             fullpath: data.rslt.obj.attr("fullpath")
-
           success: (result) ->
             if result
-              $("#file-content").html result
+              $("#code").html result
               FilesManager.initHandlers()
               $.jGrowl data.rslt.obj.attr("fullpath") + " was loaded.",
                 life: 5000

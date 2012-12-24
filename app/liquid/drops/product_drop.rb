@@ -17,7 +17,7 @@ class ProductDrop < Cms::BaseDrop
   end
 
   def to_param
-    @soutce.to_param
+    @source.to_param
   end
 
   def has_stock?

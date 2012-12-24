@@ -1,5 +1,23 @@
 /*
  *= require jquery.jgrowl
+ *= require codemirror/codemirror
+ *= require codemirror/util/simple-hint
+ *= require codemirror/util/dialog.css
+ *= require codemirror/theme/neat
+ *= require codemirror/theme/elegant
+ *= require codemirror/theme/erlang-dark
+ *= require codemirror/theme/night
+ *= require codemirror/theme/monokai
+ *= require codemirror/theme/cobalt
+ *= require codemirror/theme/eclipse
+ *= require codemirror/theme/rubyblue
+ *= require codemirror/theme/lesser-dark
+ *= require codemirror/theme/xq-dark
+ *= require codemirror/theme/ambiance
+ *= require codemirror/theme/blackboard
+ *= require codemirror/theme/vibrant-ink
+ *= require codemirror/theme/solarized
+ *= require codemirror/theme/twilight
  *= require_self
 */
 
@@ -19,4 +37,27 @@
 #jsTree ul {
     margin: 0;
     padding: 0;
+}
+
+iframe#preview{
+    width: 100%;
+    margin-top: 20px;
+    height: 400px;
+}
+
+.cm-liquid-tag {
+    color: #32273f;
+    background: #ead9ff;
+}
+
+.cm-liquid-variable {
+    color: #29739b;
+    background: #c2e0f0;
+}
+.CodeMirror-fullscreen {
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    z-index: 9999;
 }

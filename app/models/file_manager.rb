@@ -33,13 +33,13 @@ class FileManager
 
 
   def self.create_file(parent_dir, filename)
-    content_type = Editable.content_type filename
+    content_type = Editable.mime_for filename
     target_name = self.slugify(filename)
 
     if filename_ext = File.extname(filename)
       target_name = self.slugify(filename[0..-(filename_ext.length+1)]) + filename_ext
     end
-    a=self.allowed_content_type?(content_type)
+
     return {:notice => "Files of this type (#{filename_ext}) are not allowed!"} unless self.allowed_content_type?(content_type)
 
     target = File.join(Rails.root, 'themes', parent_dir, target_name)
@@ -125,7 +125,7 @@ class FileManager
 
   # rename file
   def self.rename_file(fullpath, new_name)
-    content_type = Editable.content_type new_name
+    content_type = Editable.mime_for new_name
     target_name = self.slugify(new_name)
     if filename_ext = File.extname(new_name)
       target_name = self.slugify(new_name[0..-(filename_ext.length+1)]) + filename_ext

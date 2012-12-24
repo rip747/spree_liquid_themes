@@ -1,16 +1,43 @@
+<p>Select a theme: <select onchange="CodeMirrorManager.selectTheme()" id=select>
+  <option selected>default</option>
+  <option>ambiance</option>
+  <option>blackboard</option>
+  <option>cobalt</option>
+  <option>eclipse</option>
+  <option>elegant</option>
+  <option>erlang-dark</option>
+  <option>lesser-dark</option>
+  <option>monokai</option>
+  <option>neat</option>
+  <option>night</option>
+  <option>rubyblue</option>
+  <option>solarized dark</option>
+  <option>solarized light</option>
+  <option>twilight</option>
+  <option>vibrant-ink</option>
+  <option>xq-dark</option>
+</select>
+</p>
+<table>
+  <tr>
+    <td><a href="javascript:CodeMirrorManager.autoFormatSelection()">Autoformat Selected</a></td>
+    <td><a href="javascript:CodeMirrorManager.commentSelection(true)">Comment Selected</a></td>
+    <td><a href="javascript:CodeMirrorManager.commentSelection(false)">Uncomment Selected</a></td>
+  </tr>
+</table>
+<textarea cols="20" rows="20" id="editor"><%= raw @content %></textarea>
 <form method="post" id="form_for_file" enctype="multipart/form-data" class="edit_file"
       action="<%= save_file_themes_admin_themes_url %>" accept-charset="UTF-8">
-    <div style="margin: 0pt; padding: 0pt; display: inline;">
-        <input type="hidden" value="✓" name="utf8">
-        <input type="hidden" value="<%= @file %>" name="file_name">
-        <%= token_tag(nil) %>
-    </div>
-    <textarea cols="20" rows="20" id="file_content" name="file_content" class="fullwidth"><%= @content %></textarea>
+  <div style="margin: 0pt; padding: 0pt; display: inline;">
+    <input type="hidden" value="✓" name="utf8">
+    <input type="hidden" value="<%= @file %>" name="file_name">
+    <input type="hidden" id="file_content" name="file_content">
+    <%= token_tag(nil) %>
+  </div>
 </form>
-
 <p class="submit">
-    <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
-    <input type="submit" value="Сохранить" name="commit" id="file_submit">
+  <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
+  <input type="submit" value="Сохранить" name="commit" id="file_submit">
 </p>
-
-<%#= codemirror_edit @content_type, 'form.form_for_file', 'file_content' %>
+<!--<iframe id=preview></iframe>-->
+<%= javascript_tag "var codeMirrorManager = new CodeMirrorManager('editor', '#{@content_type}');" %>
