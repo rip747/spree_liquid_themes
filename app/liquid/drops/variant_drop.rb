@@ -1,4 +1,4 @@
-class VariantDrop < Cms::BaseDrop
+class Spree::VariantDrop < Liquid::Core::BaseDrop
 
     liquid_attributes.push(*[:id, :product, :sku, :price, :weight, :height, :width, :depth, :deleted_at, :is_master,
                              :in_stock,:count_on_hand, :cost_price, :position , :images, :inventory_units,

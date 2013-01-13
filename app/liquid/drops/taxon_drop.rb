@@ -1,7 +1,6 @@
-class TaxonDrop < Cms::BaseDrop
+class Spree::TaxonDrop < Liquid::Core::BaseDrop
 
   liquid_attributes << :name << :taxonomy << :children << :parent << :siblings << :ancestors
- # liquid_methods << :parent? << :ancestors
 
   def products
     ProductsDrop.new(@source)

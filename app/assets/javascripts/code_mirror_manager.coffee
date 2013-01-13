@@ -32,8 +32,8 @@ class @CodeMirrorManager
       tabMode: "indent"
       autoCloseTags: true
     )
-    @editor.on "change", =>
-      $('#file_content').val(CodeMirrorManager.editor.getValue())
+    #@editor.on "change", =>
+      #$('#file_content').val(CodeMirrorManager.editor.getValue())
       #clearTimeout delay
       #delay = setTimeout(@updatePreview, 300)
 

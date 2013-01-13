@@ -13,7 +13,7 @@ class FileManager
           ary << {
               :attr => { :fullpath => File.join(@parent, folder), :rel => 'folder'},
               :data => folder,
-              :state => Dir[Rails.root.join("themes/#{@parent}/#{folder}/*")].empty? ? 'leaf' : 'closed'
+              :state => Dir[Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme}/#{@parent}/#{folder}/*")].empty? ? 'leaf' : 'closed'
           } if File.directory?(File.join(@path, folder)) && folder[0,1] != "."
         ary
       end
@@ -40,9 +40,9 @@ class FileManager
       target_name = self.slugify(filename[0..-(filename_ext.length+1)]) + filename_ext
     end
 
-    return {:notice => "Files of this type (#{filename_ext}) are not allowed!"} unless self.allowed_content_type?(content_type)
+    return {:notice => "Files of this type (#{filename_ext}) are not allowed!"} unless self.allowed_content_type?(filename_ext)
 
-    target = File.join(Rails.root, 'themes', parent_dir, target_name)
+    target = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, parent_dir, target_name)
 
     begin
       File.open(target, 'w+') do |file|
@@ -65,23 +65,24 @@ class FileManager
   end
 
   def self.save_file(file_name, content)
+    file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme, file_name)
 
     begin
-      File.open(file_name, 'w+') do |file|
-        file.write(content)
+      File.open(file, 'w+') do |f|
+        f.write(content)
       end
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}, :layout => false
     end
 
-    File.read(file_name)
+    File.read(file)
   end
 
 
   # remove dir
   def self.remove_dir(fullpath)
     begin
-      Dir.rmdir(File.join(Rails.root, 'themes', fullpath))
+      Dir.rmdir(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath))
       return {:status => 1, :notice => ('Directory "%s" was successfully removed' % fullpath)}
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
@@ -91,7 +92,7 @@ class FileManager
   # remove file
   def self.remove_file(fullpath)
     begin
-      File.delete(File.join(Rails.root, 'themes', fullpath))
+      File.delete(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath))
       notice = 'File "%s" was successfully removed' % fullpath
       return {:status => 1, :notice => notice}
     rescue SystemCallError => boom
@@ -108,7 +109,8 @@ class FileManager
     dir_path = segments.join('/')
 
     begin
-      File.rename(File.join(Rails.root, 'themes', fullpath), File.join(Rails.root, 'themes', dir_path, target_name))
+      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath),
+                  File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, dir_path, target_name))
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
     end
@@ -131,14 +133,15 @@ class FileManager
       target_name = self.slugify(new_name[0..-(filename_ext.length+1)]) + filename_ext
     end
 
-    unless FileManager.allowed_content_type?(content_type)
+    unless FileManager.allowed_content_type?(filename_ext)
       return {:notice => "Files of this type (#{filename_ext}) are not allowed!"}
     end
 
     dir_path = File.dirname(fullpath)
 
     begin
-      File.rename(File.join(Rails.root, 'themes', fullpath), File.join(Rails.root, 'themes', dir_path, target_name))
+      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath),
+                  File.join(Rails.root, 'themes',Refinery::Themes::Theme.current_theme, dir_path, target_name))
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
     end
@@ -155,7 +158,7 @@ class FileManager
   # create dir
   def self.create_dir(parent_dir, dir_name)
     slugged_name = slugify(dir_name)
-    path = File.join(Rails.root, 'themes', parent_dir)
+    path = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, parent_dir)
     create_path = File.join(path, slugged_name)
 
     if self.secured_path?(path) && !File.exist?(create_path) && FileUtils.mkdir(create_path)
@@ -179,7 +182,8 @@ class FileManager
   end
 
   def self.allowed_content_type?(type)
-    type =~ /[text\/css|text\/javascript|text\/html|text\/yaml]/
+    return true unless Editable.mime_for(".#{type}").eql?('unknown_type')
+    return false if Editable.mime_for(".#{type}").eql?('unknown_type')
   end
 
   def self.slugify(value)

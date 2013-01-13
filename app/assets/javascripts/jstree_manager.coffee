@@ -9,17 +9,35 @@ class @JstreeManager
   buildTree: ->
     @tree.jstree(
       plugins: ["themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "contextmenu"]
+      contextmenu:
+        items:
+          create:
+            "separator_before"  : false
+            "separator_after"   : true
+            "label"             : "Create"
+            "action"            : false
+            submenu:
+              "create_file":
+                "seperator_before" : false
+                "seperator_after" : false
+                "label" : "File"
+                action: (obj) -> this.create(obj, "last", {"attr" : {"rel" : "default"}})
+              "create_folder":
+                "seperator_before" : false
+                "seperator_after" : false
+                "label" : "Folder"
+                action: (obj) -> this.create(obj, "last", {"attr" : { "rel" : "folder"}})
       themes:
         url: "/assets/jstree/themes/apple/style.css"
       json_data:
         ajax:
-          url: "/refinery/themes/list"
+          url: "/refinery/themes/editor/list"
           type: "POST"
           data: (n) ->
             fullpath: (if n.attr then n.attr("fullpath") else "")
       search:
         ajax:
-          url: "/refinery/themes/search"
+          url: "/refinery/themes/editor/search"
           data: (str) ->
             search_str: str
       types:
@@ -48,7 +66,7 @@ class @JstreeManager
         $.ajax
           async: false
           type: "POST"
-          url: "/refinery/themes/file"
+          url: "/refinery/themes/editor/file"
           beforeSend: (request) ->
             return true
           data:
@@ -65,7 +83,7 @@ class @JstreeManager
 
 
     ).bind("create.jstree", (e, data) ->
-      $.post "/refinery/themes/add",
+      $.post "/refinery/themes/editor/add",
         fullpath: data.rslt.parent.attr("fullpath")
         title: data.rslt.name
         type: data.rslt.obj.attr("rel"),
@@ -86,7 +104,7 @@ class @JstreeManager
         $.ajax
           async: false
           type: "POST"
-          url: "/refinery/themes/delete"
+          url: "/refinery/themes/editor/delete"
           data:
             fullpath: data.rslt.obj.attr("fullpath")
             type: data.rslt.obj.attr("rel")
@@ -107,7 +125,7 @@ class @JstreeManager
       $.ajax
         async: true
         type: "POST"
-        url: "/refinery/themes/rename"
+        url: "/refinery/themes/editor/rename"
         data:
           fullpath: data.rslt.obj.attr("fullpath")
           new_name: data.rslt.new_name
@@ -131,7 +149,7 @@ class @JstreeManager
         $.ajax
           async: false
           type: "POST"
-          url: "/refinery/themes/move"
+          url: "/refinery/themes/editor/move"
           data:
             fullpath: $(this).attr("fullpath")
             ref: data.rslt.np.attr("fullpath")

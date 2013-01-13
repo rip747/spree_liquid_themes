@@ -1,9 +1,26 @@
+require 'open-uri'
+
 module Refinery
   module Themes
     class Theme < Refinery::Core::BaseModel
+
       attr_accessible :name, :description, :position
 
+      def default_assigns(str)
+        yaml = YAML::load(str)["assigns"] || false
+        return {} unless yaml
+        assigns = extract_assigns(yaml, :vars)
+        extract_assigns(yaml, :collections).each do |k, v|
+          assigns[k] = Collection.find_by_key v
+        end
+        return assigns
+      end
+
+
       class << self
+        include ActionController::DataStreaming
+
+        attr_accessor :content_type, :headers
 
         def current_theme
           ::Refinery::Setting.find_or_set(:current_theme, "default")
@@ -13,8 +30,8 @@ module Refinery
           ::Refinery::Setting.find_or_set(:default_layout, "site")
         end
 
-        def current_theme_path
-          Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme}")
+        def current_theme_path(theme_dir=Refinery::Themes::Theme.current_theme)
+          Rails.root.join("themes/#{theme_dir}")
         end
 
         def layout_raw(file_name)
@@ -22,14 +39,15 @@ module Refinery
         end
 
         def all
-          Dir.glob(File.join(THEME_PATH, "*")).collect { |dir|
+          Dir.glob(Rails.root.join("themes", "*")).collect { |dir|
             dir = dir.split("/").last
-            [config_for(dir)["theme"]["name"], dir]
+            config = config_for(dir)
+            config["theme"]
           }
         end
 
         def config_for(key)
-          YAML::load(File.open(self.current_theme_path.join("config/config.yml")))
+          YAML::load(File.open(self.current_theme_path(key).join("config/config.yml")))
         end
 
         def layouts

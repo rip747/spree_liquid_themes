@@ -1,26 +1,38 @@
-Refinery::Core::Engine.routes.append do
+Rails.application.routes.prepend  do
+  match "/themes/:key/image.png", :to => "refinery/themes/theme#sreenshot"
+end
 
-  # Frontend routes
-  namespace :themes do
-    resources :themes, :path => '' do
-
-    end
-  end
-
+Refinery::Core::Engine.routes.prepend do
   # Admin routes
   namespace :themes, :path => '' do
     namespace :admin, :path => 'refinery' do
-      resources :themes, :except => :show do
+      scope :path => 'themes' do
+        root :to => "themes#index"
+
+        resource :editor, :controller => 'editor' do
+          root :to => "editor#index"
+
+          collection do
+            post :list
+            post :file
+            post :save_file
+            post :add
+            post :rename
+            post :delete
+          end
+        end
+
+      end
+
+
+      resources :themes, :except => [:show, :destroy] do
         collection do
-          post :list
-          post :file
-          post :save_file
-          post :add
-          post :rename
-          post :delete
-          post :update_positions
+          get :upload
+          get :settings
+          get :select_theme
         end
       end
+
     end
   end
 

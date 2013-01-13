@@ -1,4 +1,4 @@
-class LineItemDrop < Cms::BaseDrop
+class Spree::LineItemDrop < Liquid::Core::BaseDrop
 
   liquid_attributes << :id << :quantity << :price << :product << :order << :variant
 

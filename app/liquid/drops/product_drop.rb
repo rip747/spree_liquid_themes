@@ -1,4 +1,4 @@
-class ProductDrop < Cms::BaseDrop
+class Spree::ProductDrop < Liquid::Core::BaseDrop
 
   liquid_attributes.push(*[:id, :name, :description, :price, :permalink,
                            :available_on, :shipping_category, :deleted_at,

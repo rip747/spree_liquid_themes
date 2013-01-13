@@ -1,4 +1,4 @@
-class Refinery::Blog::PostDrop < Cms::BaseDrop
+class Refinery::Blog::PostDrop < Liquid::Core::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes = [:created_at, :updated_at, :id, :draft, :published_at, :author, :cached_slug,

@@ -18,13 +18,14 @@ class @FilesManager
       $("#form_for_file").submit()
 
     $("#form_for_file").submit ->
+      $('#file_content').val(CodeMirrorManager.editor.getValue())
       FilesManager.saveFile()
       false
 
 
   @saveFile = ->
     $.ajax
-      url: "/refinery/themes/save_file"
+      url: "/refinery/themes/editor/save_file"
       type: "POST"
       beforeSend: (request) ->
         $("#spinner").show()

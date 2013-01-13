@@ -1,4 +1,4 @@
-class ImageDrop < Cms::BaseDrop
+class Spree::ImageDrop < Liquid::Core::BaseDrop
   
   liquid_attributes << :attachment << :alt
   

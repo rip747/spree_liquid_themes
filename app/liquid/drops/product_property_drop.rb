@@ -1,4 +1,4 @@
-class ProductPropertyDrop < Cms::BaseDrop
+class Spree::ProductPropertyDrop < Liquid::Core::BaseDrop
 
   liquid_attributes << :id << :value << :product << :property
 

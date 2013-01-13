@@ -4,7 +4,7 @@ require 'editable'
 require 'hash'
 
 module LiquidEngine
-  require 'liquid_engine/engine'
+  require 'liquid/engine'
 
   class << self
     attr_writer :root

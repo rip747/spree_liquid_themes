@@ -1,4 +1,4 @@
-class RoleDrop < Cms::BaseDrop
+class Spree::RoleDrop < Liquid::Core::BaseDrop
   
   liquid_attributes << :name << :users
   

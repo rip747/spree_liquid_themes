@@ -1,4 +1,5 @@
 /*
+ *= require fancybox/jquery.fancybox
  *= require jquery.jgrowl
  *= require codemirror/codemirror
  *= require codemirror/util/simple-hint
@@ -21,43 +22,29 @@
  *= require_self
 */
 
-.fullwidth{
+#records table tr td {
+    padding-top: 20px;
+}
+
+a.fancybox {
+    text-align: center;
+    border-bottom: none !important;
+}
+
+a.fancybox-close {
+    border-bottom: none !important;
+}
+
+.screenshot {
+    width: 100%;
+}
+
+.fullwidth {
     width: 98%;
 }
-#jsTree li a {
-    background: none;
-    border: none;
-    display: inline;
-    padding: 0;
-}
-#jsTree li {
-    margin-top: 0;
-}
 
-#jsTree ul {
-    margin: 0;
-    padding: 0;
-}
-
-iframe#preview{
-    width: 100%;
-    margin-top: 20px;
-    height: 400px;
-}
-
-.cm-liquid-tag {
-    color: #32273f;
-    background: #ead9ff;
-}
-
-.cm-liquid-variable {
-    color: #29739b;
-    background: #c2e0f0;
-}
-.CodeMirror-fullscreen {
-    display: block;
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    z-index: 9999;
+.theme-info {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 20px;
 }

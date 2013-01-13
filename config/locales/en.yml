@@ -7,22 +7,7 @@ en:
       admin:
         themes:
           actions:
-            create_new: Add New Theme
-            reorder: Reorder Themes
-            reorder_done: Done Reordering Themes
-          records:
-            title: Themes
-            sorry_no_results: Sorry! There are no results found.
-            no_items_yet: There are no Themes yet. Click "Add New Theme" to add your first theme.
-          theme:
-            view_live_html: View this theme live <br/><em>(opens in a new window)</em>
-            edit: Edit this theme
-            delete: Remove this theme forever
-      themes:
-        show:
-          other: Other Themes
-  activerecord:
-    attributes:
-      'refinery/themes/theme':
-        name: Name
-        description: Description
+            upload: Upload New Theme
+            browse: Browse Themes
+            settings: Theme Settings
+            editor: Theme Editor
