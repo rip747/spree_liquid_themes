@@ -7,10 +7,10 @@ Refinery::Core::Engine.routes.prepend do
   namespace :themes, :path => '' do
     namespace :admin, :path => 'refinery' do
       scope :path => 'themes' do
-        root :to => "themes#index"
+        root :to => "themes#index", :via => :get
 
         resource :editor, :controller => 'editor' do
-          root :to => "editor#index"
+          root :to => "editor#index", :via => :get
 
           collection do
             post :list
@@ -25,9 +25,10 @@ Refinery::Core::Engine.routes.prepend do
       end
 
 
-      resources :themes, :except => [:show, :destroy] do
+      resources :themes, :except => [:show, :destroy, :new] do
         collection do
           get :upload
+          get :reset
           get :settings
           get :select_theme
         end

@@ -13,7 +13,7 @@ class FileManager
           ary << {
               :attr => { :fullpath => File.join(@parent, folder), :rel => 'folder'},
               :data => folder,
-              :state => Dir[Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme}/#{@parent}/#{folder}/*")].empty? ? 'leaf' : 'closed'
+              :state => Dir[Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/#{@parent}/#{folder}/*")].empty? ? 'leaf' : 'closed'
           } if File.directory?(File.join(@path, folder)) && folder[0,1] != "."
         ary
       end
@@ -42,7 +42,7 @@ class FileManager
 
     return {:notice => "Files of this type (#{filename_ext}) are not allowed!"} unless self.allowed_content_type?(filename_ext)
 
-    target = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, parent_dir, target_name)
+    target = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, parent_dir, target_name)
 
     begin
       File.open(target, 'w+') do |file|
@@ -65,7 +65,7 @@ class FileManager
   end
 
   def self.save_file(file_name, content)
-    file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme, file_name)
+    file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme_key, file_name)
 
     begin
       File.open(file, 'w+') do |f|
@@ -82,7 +82,7 @@ class FileManager
   # remove dir
   def self.remove_dir(fullpath)
     begin
-      Dir.rmdir(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath))
+      Dir.rmdir(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, fullpath))
       return {:status => 1, :notice => ('Directory "%s" was successfully removed' % fullpath)}
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
@@ -92,7 +92,7 @@ class FileManager
   # remove file
   def self.remove_file(fullpath)
     begin
-      File.delete(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath))
+      File.delete(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, fullpath))
       notice = 'File "%s" was successfully removed' % fullpath
       return {:status => 1, :notice => notice}
     rescue SystemCallError => boom
@@ -109,8 +109,8 @@ class FileManager
     dir_path = segments.join('/')
 
     begin
-      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath),
-                  File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, dir_path, target_name))
+      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, fullpath),
+                  File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, dir_path, target_name))
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
     end
@@ -140,8 +140,8 @@ class FileManager
     dir_path = File.dirname(fullpath)
 
     begin
-      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, fullpath),
-                  File.join(Rails.root, 'themes',Refinery::Themes::Theme.current_theme, dir_path, target_name))
+      File.rename(File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, fullpath),
+                  File.join(Rails.root, 'themes',Refinery::Themes::Theme.current_theme_key, dir_path, target_name))
     rescue SystemCallError => boom
       return {:notice => "Error: #{boom}"}
     end
@@ -158,7 +158,7 @@ class FileManager
   # create dir
   def self.create_dir(parent_dir, dir_name)
     slugged_name = slugify(dir_name)
-    path = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme, parent_dir)
+    path = File.join(Rails.root, 'themes', Refinery::Themes::Theme.current_theme_key, parent_dir)
     create_path = File.join(path, slugged_name)
 
     if self.secured_path?(path) && !File.exist?(create_path) && FileUtils.mkdir(create_path)
@@ -174,6 +174,19 @@ class FileManager
     result
 
   end
+
+  def self.unzip_file (file)
+    require 'zip/zip'
+
+    Zip::ZipFile.open(file) { |zip_file|
+      zip_file.each { |f|
+        f_path=File.join(Rails.root.join('themes'), f.name)
+        FileUtils.mkdir_p(File.dirname(f_path))
+        zip_file.extract(f, f_path) unless File.exist?(f_path)
+      }
+    }
+  end
+
 
   private
 

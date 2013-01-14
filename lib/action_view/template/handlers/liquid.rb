@@ -14,9 +14,10 @@ class ActionView::Template::Handlers::Liquid
   def render(template, local_assigns = {})
     @view.controller.headers["Content-Type"] ||= 'text/html; charset=utf-8'
 
-
     assigns = @view.assigns.update('view' => @view)
     assigns['site_name'] = Refinery::Core.site_name
+    assigns['theme'] = Refinery::Themes::Theme.current_theme_config['assigns']
+    assigns['theme_config'] = Refinery::Themes::Theme.current_theme_config['theme']
 
     #TODO
     #assigns = (@view.instance_variables.map{ |i| i.to_s} - PROTECTED_INSTANCE_VARIABLES).inject({}) do |hash, var_name|
@@ -51,7 +52,7 @@ class ActionView::Template::Handlers::Liquid
       assigns["content_for_#{key.to_s}"] = content
     end
 
-    partials_path = Liquid::LocalFileSystem.new(Refinery::Themes::Theme.current_theme_path.join("views/partials"))
+    partials_path = Liquid::LocalFileSystem.new(Refinery::Themes::Theme.theme_path.join("views/partials"))
 
     assigns['page'].parts.each do |part|
       Liquid::Template.parse(part.body).render(assigns)

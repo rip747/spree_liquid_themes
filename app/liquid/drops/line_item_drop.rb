@@ -1,6 +1,7 @@
 class Spree::LineItemDrop < Liquid::Core::BaseDrop
 
-  liquid_attributes << :id << :quantity << :price << :product << :order << :variant
+  class_attribute :liquid_attributes
+  self.liquid_attributes = [:id, :quantity, :price, :product, :order, :variant]
 
   def increment_quantity
     @source.quantity += 1

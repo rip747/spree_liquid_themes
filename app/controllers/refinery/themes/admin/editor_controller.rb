@@ -7,19 +7,19 @@ module Refinery
 
         def list
           @parent = params[:fullpath]
-          file_manager = FileManager.new(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme}/#{@parent}"), @parent)
+          file_manager = FileManager.new(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/#{@parent}"), @parent)
           render :json => file_manager.dirs.concat(file_manager.files), :layout => false
         end
 
         def file
           @related_path = params[:fullpath]
-          file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme, params[:fullpath])
+          file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme_key, params[:fullpath])
           render :text => 'file not found' and return unless File.exist? file
           @content = File.read(file)
           @content_type = Editable.mime_for file
 
           if @mime_for == 'image'
-            render :inline => "<%= image_tag '/themes/#{Refinery::Themes::Theme.current_theme}/#{params[:fullpath]}' %>"
+            render :inline => "<%= image_tag '/themes/#{Refinery::Themes::Theme.current_theme_key}/#{params[:fullpath]}' %>"
           else
             render :layout => false
           end

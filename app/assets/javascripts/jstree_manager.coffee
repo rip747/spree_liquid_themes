@@ -11,6 +11,9 @@ class @JstreeManager
       plugins: ["themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "contextmenu"]
       contextmenu:
         items:
+          upload:
+            "label" : "Upload File"
+            action: (obj) -> alert('Comming soon...')
           create:
             "separator_before"  : false
             "separator_after"   : true

@@ -1,5 +1,6 @@
 class Spree::ImageDrop < Liquid::Core::BaseDrop
-  
-  liquid_attributes << :attachment << :alt
+
+  class_attribute :liquid_attributes
+  self.liquid_attributes = [:attachment, :alt]
   
 end

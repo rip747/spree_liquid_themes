@@ -1,41 +1,38 @@
 <%= render :partial => "refinery/themes/admin/shared/theme_assets" %>
-
-<aside id='actions'>
-    <%= render "refinery/themes/admin/shared/actions" %>
-</aside>
+<%= render "refinery/themes/admin/shared/actions" %>
 
 <div id='records'>
     <% if @themes.any? %>
-        <% current_theme = @themes.select { |t| t['key'] =~ /#{Refinery::Themes::Theme.current_theme}/ }.first %>
+        <% current_theme = Refinery::Themes::Theme.current_theme_config %>
         <table cellpadding="1" cellspacing="1" style="width: 100%; ">
             <tbody>
             <tr>
                 <td style="width: 70%">
-                    <%= link_to(image_tag("/themes/#{current_theme['key']}/image.png",
-                                          {class: 'screenshot'}), "/themes/#{current_theme['key']}/image.png",
+                    <%= link_to(image_tag("/themes/#{current_theme['theme']['key']}/image.png",
+                                          {class: 'screenshot'}), "/themes/#{current_theme['theme']['key']}/image.png",
                                 {class: 'fancybox', title: 'Preview Theme'}) %>
                 </td>
                 <td class="theme-info">
-                    <h1><%= current_theme['name'] %></h1>
-                    <span>by <%= current_theme['author'] %></span>
-                    <p><%= current_theme['description'] %></p>
+                    <h1><%= current_theme['theme']['name'] %></h1>
+                    <span>by <%= current_theme['theme']['author'] %></span>
+                    <p><%= current_theme['theme']['description'] %></p>
                 </td>
             </tr>
 
-            <% @themes.reject { |i| i.eql?(current_theme) }.each do |theme| %>
+            <% @themes.reject { |i| i['theme'].eql?(current_theme['theme']) }.each do |theme| %>
                 <tr>
                     <td style="width: 70%">
-                        <%= link_to(image_tag("/themes/#{theme['key']}/image.png", {class: 'screenshot'}), "/themes/#{theme['key']}/image.png",
+                        <%= link_to(image_tag("/themes/#{theme['theme']['key']}/image.png", {class: 'screenshot'}), "/themes/#{theme['theme']['key']}/image.png",
                                     {class: 'fancybox', title: 'Preview Theme'}) %>
                     </td>
                     <td class="theme-info">
-                        <h1><%= theme['name'] %></h1>
-                        <span>by <%= theme['author'] %></span>
-                        <p><%= theme['description'] %></p>
-                        <p><%= link_to "Select Theme", "/refinery/themes/select_theme?key=#{theme['key']}", {class: "button select_theme_button"} %>
+                        <h1><%= theme['theme']['name'] %></h1>
+                        <span>by <%= theme['theme']['author'] %></span>
+                        <p><%= theme['theme']['description'] %></p>
+                        <p><%= link_to "Select Theme", "/refinery/themes/select_theme?key=#{theme['theme']['key']}", {class: "button select_theme_button"} %>
                             <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
                         </p>
-                        <p><%= link_to "Preview Theme", "/themes/#{theme['key']}/image.png", class: "fancybox button" %></p>
+                        <p><%= link_to "Preview Theme", "/themes/#{theme['theme']['key']}/image.png", class: "fancybox button" %></p>
                     </td>
                 </tr>
             <% end %>

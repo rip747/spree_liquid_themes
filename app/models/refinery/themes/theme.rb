@@ -22,40 +22,42 @@ module Refinery
 
         attr_accessor :content_type, :headers
 
-        def current_theme
+        def current_theme_key
           ::Refinery::Setting.find_or_set(:current_theme, "default")
+        end
+
+        def current_theme_config
+          config_for(current_theme_key)
         end
 
         def default_layout
           ::Refinery::Setting.find_or_set(:default_layout, "site")
         end
 
-        def current_theme_path(theme_dir=Refinery::Themes::Theme.current_theme)
+        def theme_path(theme_dir=current_theme_key)
           Rails.root.join("themes/#{theme_dir}")
         end
 
         def layout_raw(file_name)
-          File.read(self.current_theme_path.join("layouts/#{file_name}.liquid"))
+          File.read(theme_path.join("layouts/#{file_name}.liquid"))
         end
 
         def all
           Dir.glob(Rails.root.join("themes", "*")).collect { |dir|
-            dir = dir.split("/").last
-            config = config_for(dir)
-            config["theme"]
+            config_for(dir.split("/").last)
           }
         end
 
         def config_for(key)
-          YAML::load(File.open(self.current_theme_path(key).join("config/config.yml")))
+          YAML::load(File.open(theme_path(key).join("config/config.yml")))
         end
 
         def layouts
-          layouts_list(self.current_theme_path.join("views/layouts", "*.liquid"))
+          layouts_list(theme_path.join("views/layouts", "*.liquid"))
         end
 
         def templates
-          templates_list(self.current_theme_path.join("views/refinery/pages/", "*.liquid"))
+          templates_list(theme_path.join("views/refinery/pages/", "*.liquid"))
         end
 
         private

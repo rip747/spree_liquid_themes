@@ -8,6 +8,7 @@ en:
         themes:
           actions:
             upload: Upload New Theme
+            reset: Install/Reset Default Theme
             browse: Browse Themes
-            settings: Theme Settings
-            editor: Theme Editor
+            settings: Current Theme Settings
+            editor: Current Theme Editor

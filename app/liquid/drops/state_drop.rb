@@ -1,5 +1,6 @@
 class Spree::StateDrop < Liquid::Core::BaseDrop
-  
-  liquid_attributes << :name << :country << :locations
+
+  class_attribute :liquid_attributes
+  self.liquid_attributes = [:name, :country, :locations]
   
 end
