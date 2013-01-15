@@ -7,6 +7,11 @@
 #= require code_mirror_manager
 #= require_self
 
+class @Themes
+  @resetToDefaultTheme = (url) ->
+    if (confirm("Are you sure?"))
+      window.location = url
+
 $ ->
   $(".fancybox").fancybox
     openEffect: "elastic"

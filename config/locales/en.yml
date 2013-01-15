@@ -1,14 +1,14 @@
 en:
   refinery:
     plugins:
-      liquid_engine:
+      spreefinery:
         title: Themes
     themes:
       admin:
         themes:
           actions:
             upload: Upload New Theme
-            reset: Install/Reset Default Theme
+            reset: Re-Install Theme
             browse: Browse Themes
             settings: Current Theme Settings
             editor: Current Theme Editor

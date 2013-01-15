@@ -68,7 +68,7 @@ class FileManager
     file = File.join(Rails.root, "themes", Refinery::Themes::Theme.current_theme_key, file_name)
 
     begin
-      File.open(file, 'w+') do |f|
+      File.open(file, 'w+b') do |f|
         f.write(content)
       end
     rescue SystemCallError => boom
@@ -187,16 +187,16 @@ class FileManager
     }
   end
 
+  def self.allowed_content_type?(type)
+    return true unless Editable.mime_for(".#{type}").eql?('unknown_type')
+    return false if Editable.mime_for(".#{type}").eql?('unknown_type')
+  end
+
 
   private
 
   def self.secured_path?(file_path)
     File.exist?(file_path) && !File.dirname(file_path).index(Rails.root.join('themes').to_s).nil?
-  end
-
-  def self.allowed_content_type?(type)
-    return true unless Editable.mime_for(".#{type}").eql?('unknown_type')
-    return false if Editable.mime_for(".#{type}").eql?('unknown_type')
   end
 
   def self.slugify(value)

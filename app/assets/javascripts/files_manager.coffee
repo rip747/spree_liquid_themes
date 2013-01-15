@@ -8,7 +8,8 @@ class @FilesManager
               rel: @id.toString().replace("add_", "")
         when "search"
           $("#jsTree").jstree "search", document.getElementById("text").value
-        when "search"
+        when "refresh"
+          $("#code").html('')
           $('#jsTree').jstree('refresh',-1);
         else
           $("#jsTree").jstree @id
@@ -34,8 +35,6 @@ class @FilesManager
       data: $.param($("#form_for_file").serializeArray())
       dataType: "html"
       success: (D) ->
-        #$("#spinner").hide()
-        #$("#file_submit").show()
         $("#code").html(D)
         FilesManager.initHandlers()
         $.jGrowl "File successfully saved!",

@@ -19,6 +19,8 @@ Refinery::Core::Engine.routes.prepend do
             post :add
             post :rename
             post :delete
+            post :upload
+            get  :upload_file
           end
         end
 

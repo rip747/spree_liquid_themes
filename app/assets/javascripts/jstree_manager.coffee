@@ -6,29 +6,42 @@ class @JstreeManager
     @buildTree()
     @tree
 
+  uploadFile = (obj) ->
+    iframe = $("<iframe id='dialog_iframe' frameborder='0' marginheight='0' marginwidth='0' border='0'></iframe>")
+    iframe.corner "8px"  unless $.browser.msie
+    iframe.dialog
+      title: "Upload New File"
+      modal: true
+      resizable: false
+      autoOpen: true
+      open: onOpenDialog
+      close: onCloseDialog
+    iframe.attr "src", "/refinery/themes/editor/upload_file?app_dialog=true&dialog=true&path="+obj.attr("fullpath")
+
   buildTree: ->
     @tree.jstree(
       plugins: ["themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "contextmenu"]
       contextmenu:
         items:
           upload:
-            "label" : "Upload File"
-            action: (obj) -> alert('Comming soon...')
+            label: "Upload File"
+            action: (obj) -> uploadFile obj
+            _class: "upload_file"
           create:
-            "separator_before"  : false
-            "separator_after"   : true
-            "label"             : "Create"
-            "action"            : false
+            separator_before: false
+            separator_after: true
+            label: "Create"
+            action: false
             submenu:
-              "create_file":
-                "seperator_before" : false
-                "seperator_after" : false
-                "label" : "File"
+              create_file:
+                seperator_before: false
+                seperator_after: false
+                label: "File"
                 action: (obj) -> this.create(obj, "last", {"attr" : {"rel" : "default"}})
-              "create_folder":
-                "seperator_before" : false
-                "seperator_after" : false
-                "label" : "Folder"
+              create_folder:
+                seperator_before: false
+                seperator_after: false
+                label: "Folder"
                 action: (obj) -> this.create(obj, "last", {"attr" : { "rel" : "folder"}})
       themes:
         url: "/assets/jstree/themes/apple/style.css"
@@ -84,7 +97,6 @@ class @JstreeManager
               $.jGrowl result.notice,
                 life: 5000
 
-
     ).bind("create.jstree", (e, data) ->
       $.post "/refinery/themes/editor/add",
         fullpath: data.rslt.parent.attr("fullpath")
@@ -100,7 +112,6 @@ class @JstreeManager
             $.jstree.rollback data.rlbk
             $.jGrowl result.notice,
               life: 5000
-
 
     ).bind("remove.jstree", (e, data) ->
       if (confirm("Are you sure?"))
@@ -146,7 +157,6 @@ class @JstreeManager
             $.jGrowl result.notice,
               life: 5000
 
-
     ).bind "move_node.jstree", (e, data) ->
       data.rslt.o.each (i) ->
         $.ajax
@@ -165,4 +175,3 @@ class @JstreeManager
             else
               $(data.rslt.oc).attr "fullpath", "node_" + result.fullpath
               data.inst.refresh data.inst._get_parent(data.rslt.oc)  if data.rslt.cy and $(data.rslt.oc).children("UL").length
-

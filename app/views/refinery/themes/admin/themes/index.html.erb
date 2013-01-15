@@ -13,9 +13,17 @@
                                 {class: 'fancybox', title: 'Preview Theme'}) %>
                 </td>
                 <td class="theme-info">
-                    <h1><%= current_theme['theme']['name'] %></h1>
+                    <h1><%= current_theme['theme']['name'] %><br><span>ver. <%= current_theme['theme']['version'] %></span></h1>
                     <span>by <%= current_theme['theme']['author'] %></span>
+
                     <p><%= current_theme['theme']['description'] %></p>
+                    <% if current_theme['theme']['key'].eql?('default') %>
+                        <p>
+                            <%= link_to t('refinery.themes.admin.themes.actions.reset'), '#',
+                                        :onclick => "Themes.resetToDefaultTheme('#{refinery.reset_themes_admin_themes_path}')",
+                                        :class => 'button' %>
+                        </p>
+                    <% end %>
                 </td>
             </tr>
 
@@ -26,13 +34,21 @@
                                     {class: 'fancybox', title: 'Preview Theme'}) %>
                     </td>
                     <td class="theme-info">
-                        <h1><%= theme['theme']['name'] %></h1>
+                        <h1><%= theme['theme']['name'] %><br><span>ver. <%= theme['theme']['version'] %></span></h1>
                         <span>by <%= theme['theme']['author'] %></span>
                         <p><%= theme['theme']['description'] %></p>
+
                         <p><%= link_to "Select Theme", "/refinery/themes/select_theme?key=#{theme['theme']['key']}", {class: "button select_theme_button"} %>
                             <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
                         </p>
-                        <p><%= link_to "Preview Theme", "/themes/#{theme['theme']['key']}/image.png", class: "fancybox button" %></p>
+                        <% if theme['theme']['key'].eql?('default') %>
+                            <p>
+                                <%= link_to t('refinery.themes.admin.themes.actions.reset'), '#',
+                                            :onclick => "Themes.resetToDefaultTheme('#{refinery.reset_themes_admin_themes_path}')",
+                                            :class => 'button' %>
+                            </p>
+                        <% end %>
+                        <!--<p><%= link_to "Preview Theme", "/themes/#{theme['theme']['key']}/image.png", class: "fancybox button" %></p>-->
                     </td>
                 </tr>
             <% end %>

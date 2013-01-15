@@ -5,6 +5,26 @@ module Refinery
 
         def index; end
 
+        def upload_file
+          @path = params[:path]
+        end
+
+        def upload
+          file = params[:file]
+
+          unless FileManager.allowed_content_type?(File.extname(file.original_filename))
+            notice = 'File "%s" could not be uploaded' % File.extname(file.original_filename)
+          else
+            file_path = "#{params[:path]}/#{file.original_filename}"
+            FileManager.save_file(file_path, file.read)
+            notice = "A new file was successfully uploaded!"
+          end
+          @dialog_successful = true
+          render :nothing => true, :layout => 'refinery/admin_dialog'
+          #render :action => 'index'
+          #redirect_to(refinery.root_themes_admin_editor_path, :notice => notice)
+        end
+
         def list
           @parent = params[:fullpath]
           file_manager = FileManager.new(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/#{@parent}"), @parent)
@@ -18,8 +38,8 @@ module Refinery
           @content = File.read(file)
           @content_type = Editable.mime_for file
 
-          if @mime_for == 'image'
-            render :inline => "<%= image_tag '/themes/#{Refinery::Themes::Theme.current_theme_key}/#{params[:fullpath]}' %>"
+          if @content_type == 'image'
+            render :inline => "<%= image_tag '#{params[:fullpath]}' %>"
           else
             render :layout => false
           end
