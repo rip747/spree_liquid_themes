@@ -1,9 +1,9 @@
-module Liquid
+module Spreefinery
   class Engine < Rails::Engine
     include Refinery::Engine
-    isolate_namespace Liquid::Engine
+    isolate_namespace Spreefinery::Engine
 
-    engine_name :liquid_engine
+    engine_name :spreefinery
 
     def self.activate
 
@@ -27,9 +27,9 @@ module Liquid
 
     end
 
-    initializer "register liquid_engine plugin" do
+    initializer "register spreefinery plugin" do
       Refinery::Plugin.register do |plugin|
-        plugin.name = "liquid_engine"
+        plugin.name = "spreefinery"
         plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.themes_admin_themes_path }
         plugin.pathname = root
         plugin.menu_match = /refinery\/themes\/?(settings|editor|upload)?/
@@ -37,7 +37,7 @@ module Liquid
     end
 
     config.after_initialize do
-      Refinery.register_extension(Liquid::Engine)
+      Refinery.register_extension(Spreefinery::Engine)
     end
 
     config.to_prepare &method(:activate).to_proc

@@ -3,8 +3,8 @@ require 'spree_core'
 require 'editable'
 require 'hash'
 
-module LiquidEngine
-  require 'liquid/engine'
+module SpreefineryEngine
+  require 'spreefinery/engine'
 
   class << self
     attr_writer :root
