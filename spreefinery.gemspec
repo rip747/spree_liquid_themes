@@ -15,4 +15,5 @@ Gem::Specification.new do |s|
   s.add_dependency             'refinerycms-core',    '>= 2.0.9'
   s.add_dependency             'spree', '>= 1.3.0'
   s.add_dependency             'rubyzip'
+  s.add_dependency             'clot'
 end
