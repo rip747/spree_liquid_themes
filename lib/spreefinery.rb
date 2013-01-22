@@ -2,6 +2,8 @@ require 'refinerycms-core'
 require 'spree_core'
 require 'editable'
 require 'hash'
+require 'clot'
+require 'rubyzip'
 
 module SpreefineryEngine
   require 'spreefinery/engine'
