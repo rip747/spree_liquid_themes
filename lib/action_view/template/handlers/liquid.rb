@@ -33,6 +33,7 @@ class ActionView::Template::Handlers::Liquid
     end
 
     controller = @view.controller
+
     filters = if controller.respond_to?(:liquid_filters, true)
                 controller.send(:liquid_filters)
               elsif controller.respond_to?(:master_helper_module)

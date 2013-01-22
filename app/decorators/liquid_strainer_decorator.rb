@@ -2,34 +2,27 @@ Liquid::Strainer.class_eval do
   include ActionView::Context
   include ActionView::Helpers
 
-  #include ActionView::Helpers::TextHelper
-  #include ActionView::Helpers::SanitizeHelper
-  #include ActionView::Helpers::NumberHelper
-  #include ActionView::Helpers::AssetTagHelper
-  #include ActionView::Helpers::JavaScriptHelper
-  #include ActionView::Helpers::UrlHelper
-  #include ActionView::Helpers::TagHelper
-  #include ActionView::Helpers::AtomFeedHelper
-  #include ActionView::Helpers::CacheHelper
-  #include ActionView::Helpers::ActiveModelHelper
-  #include ActionView::Helpers::CaptureHelper
-  #include ActionView::Helpers::CsrfHelper
-  #include ActionView::Helpers::DateHelper
-  #include ActionView::Helpers::FormHelper
-  #include ActionView::Helpers::FormOptionsHelper
-  #include ActionView::Helpers::FormTagHelper
-  #include ActionView::Helpers::RecordTagHelper
-  #include ActionView::Helpers::TranslationHelper
-
+  def initialize(context)
+    @context = context
+    @context.registers[:action_view].public_methods.each do |var|
+      methods << var
+      a=54
+      #__send__(:attr_accessor, var)
+    end
+  end
 
   def controller
     @controller ||= @context.registers[:controller]
   end
 
-  #def action_view
-  #  @action_view ||= @context.registers[:action_view]
-  #end
+  def action_view
+    @action_view ||= @context.registers[:action_view]
+  end
 
   delegate :request, :to => :controller
   delegate :params, :to => :request
+  delegate  :capture, :to => :action_view
+  delegate  :spree, :to => :action_view
+  #delegate  :link_to, :to => :action_view
+
 end
