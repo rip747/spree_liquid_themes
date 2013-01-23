@@ -4,11 +4,6 @@ Liquid::Strainer.class_eval do
 
   def initialize(context)
     @context = context
-    @context.registers[:action_view].public_methods.each do |var|
-      methods << var
-      a=54
-      #__send__(:attr_accessor, var)
-    end
   end
 
   def controller
@@ -23,6 +18,6 @@ Liquid::Strainer.class_eval do
   delegate :params, :to => :request
   delegate  :capture, :to => :action_view
   delegate  :spree, :to => :action_view
-  #delegate  :link_to, :to => :action_view
+  delegate  :link_to, :to => :action_view
 
 end
