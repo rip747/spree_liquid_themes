@@ -33,6 +33,7 @@ module Liquid
       context.stack do
         result = render_all(@nodelist, context)
       end
+
       context.registers[:action_view].view_flow.content[@name] = '' unless context.registers[:action_view].view_flow.content.has_key? @name
 
       context.registers[:action_view].view_flow.content[@name].concat(result.html_safe)

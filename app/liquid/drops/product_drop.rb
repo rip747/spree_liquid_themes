@@ -13,6 +13,10 @@ class Spree::ProductDrop < Liquid::Core::BaseDrop
     @options ||= options
   end
 
+  def get_source
+    @source
+  end
+
   def variant_images
     @source.variant_images
   end

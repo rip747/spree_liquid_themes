@@ -4,6 +4,12 @@ SpreeFinery
 Themes Engine for Spree+RefineryCMS with support Liquid markup language
 
 
+TODO
+===========
+ https://github.com/rtomayko/tilt
+ https://github.com/judofyr/temple
+
+
 Contributing
 ==============
 

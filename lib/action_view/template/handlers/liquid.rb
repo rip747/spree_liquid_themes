@@ -1,7 +1,14 @@
+# origianl: https://gist.github.com/4605222
+# variants:
+# https://gist.github.com/4605162
+#
 class ActionView::Template::Handlers::Liquid
 
 
-  PROTECTED_INSTANCE_VARIABLES = %w( @_controller @_first_render @output_buffer  @_assigns )
+  PROTECTED_ASSIGNS = %w( template_root response _session template_class action_name request_origin session template
+                          _response url _request _cookies variables_added _flash params _headers request cookies
+                          ignore_missing_templates flash _params logger before_filter_chain_aborted headers )
+
 
   def self.call(template)
     "ActionView::Template::Handlers::Liquid.new(self).render(#{template.source.inspect}, local_assigns)"
@@ -16,8 +23,8 @@ class ActionView::Template::Handlers::Liquid
 
     assigns = @view.assigns.update('view' => @view)
     assigns['site_name'] = Refinery::Core.site_name
-    assigns['theme'] = Refinery::Themes::Theme.current_theme_config['assigns']
-    assigns['theme_config'] = Refinery::Themes::Theme.current_theme_config['theme']
+    assigns['theme_assigns'] = Refinery::Themes::Theme.current_theme_config['assigns']
+    assigns['theme_config'] = Refinery::Themes::Theme.current_theme_config['config']
 
     #TODO
     #assigns = (@view.instance_variables.map{ |i| i.to_s} - PROTECTED_INSTANCE_VARIABLES).inject({}) do |hash, var_name|
@@ -29,6 +36,7 @@ class ActionView::Template::Handlers::Liquid
     assigns.merge!(local_assigns.stringify_keys)
 
     @view.controller._helpers.instance_methods.each do |method|
+    #@view.public_methods.each do |method|
       assigns[method.to_s] = Proc.new { @view.send(method) }
     end
 
@@ -67,8 +75,10 @@ class ActionView::Template::Handlers::Liquid
                                                    })
     end if assigns['page']
 
+    variables = assigns.reject{ |k,v| PROTECTED_ASSIGNS.include?(k) }
+
     liquid = Liquid::Template.parse(template)
-    liquid.render(assigns, :filters => filters, :registers => {:file_system => partials_path, :action_view => @view, :controller => @view.controller})
+    liquid.render(variables, :filters => filters, :registers => {:file_system => partials_path, :action_view => @view, :controller => @view.controller})
   end
 
   def compilable?

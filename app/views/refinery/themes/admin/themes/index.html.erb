@@ -8,16 +8,16 @@
             <tbody>
             <tr>
                 <td style="width: 70%">
-                    <%= link_to(image_tag("/themes/#{current_theme['theme']['key']}/image.png",
-                                          {class: 'screenshot'}), "/themes/#{current_theme['theme']['key']}/image.png",
+                    <%= link_to(image_tag("/themes/#{current_theme['config']['key']}/image.png",
+                                          {class: 'screenshot'}), "/themes/#{current_theme['config']['key']}/image.png",
                                 {class: 'fancybox', title: 'Preview Theme'}) %>
                 </td>
                 <td class="theme-info">
-                    <h1><%= current_theme['theme']['name'] %><br><span>ver. <%= current_theme['theme']['version'] %></span></h1>
-                    <span>by <%= current_theme['theme']['author'] %></span>
+                    <h1><%= current_theme['config']['name'] %><br><span>ver. <%= current_theme['config']['version'] %></span></h1>
+                    <span>by <%= current_theme['config']['author'] %></span>
 
-                    <p><%= current_theme['theme']['description'] %></p>
-                    <% if current_theme['theme']['key'].eql?('default') %>
+                    <p><%= current_theme['config']['description'] %></p>
+                    <% if current_theme['config']['key'].eql?('default') %>
                         <p>
                             <%= link_to t('refinery.themes.admin.themes.actions.reset'), '#',
                                         :onclick => "Themes.resetToDefaultTheme('#{refinery.reset_themes_admin_themes_path}')",
@@ -27,28 +27,28 @@
                 </td>
             </tr>
 
-            <% @themes.reject { |i| i['theme'].eql?(current_theme['theme']) }.each do |theme| %>
+            <% @themes.reject { |i| i['config'].eql?(current_theme['config']) }.each do |theme| %>
                 <tr>
                     <td style="width: 70%">
-                        <%= link_to(image_tag("/themes/#{theme['theme']['key']}/image.png", {class: 'screenshot'}), "/themes/#{theme['theme']['key']}/image.png",
+                        <%= link_to(image_tag("/themes/#{theme['config']['key']}/image.png", {class: 'screenshot'}), "/themes/#{theme['config']['key']}/image.png",
                                     {class: 'fancybox', title: 'Preview Theme'}) %>
                     </td>
                     <td class="theme-info">
-                        <h1><%= theme['theme']['name'] %><br><span>ver. <%= theme['theme']['version'] %></span></h1>
-                        <span>by <%= theme['theme']['author'] %></span>
-                        <p><%= theme['theme']['description'] %></p>
+                        <h1><%= theme['config']['name'] %><br><span>ver. <%= theme['config']['version'] %></span></h1>
+                        <span>by <%= theme['config']['author'] %></span>
+                        <p><%= theme['config']['description'] %></p>
 
-                        <p><%= link_to "Select Theme", "/refinery/themes/select_theme?key=#{theme['theme']['key']}", {class: "button select_theme_button"} %>
+                        <p><%= link_to "Select Theme", "/refinery/themes/select_theme?key=#{theme['config']['key']}", {class: "button select_theme_button"} %>
                             <%= image_tag "spinner.gif", :style => "display:none", :id => 'spinner', :class => "spinner" %>
                         </p>
-                        <% if theme['theme']['key'].eql?('default') %>
+                        <% if theme['config']['key'].eql?('default') %>
                             <p>
                                 <%= link_to t('refinery.themes.admin.themes.actions.reset'), '#',
                                             :onclick => "Themes.resetToDefaultTheme('#{refinery.reset_themes_admin_themes_path}')",
                                             :class => 'button' %>
                             </p>
                         <% end %>
-                        <!--<p><%= link_to "Preview Theme", "/themes/#{theme['theme']['key']}/image.png", class: "fancybox button" %></p>-->
+                        <!--<p><%= link_to "Preview Theme", "/themes/#{theme['config']['key']}/image.png", class: "fancybox button" %></p>-->
                     </td>
                 </tr>
             <% end %>
