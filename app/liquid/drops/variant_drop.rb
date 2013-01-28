@@ -1,4 +1,4 @@
-class Spree::VariantDrop < Liquid::Core::BaseDrop
+class Spree::VariantDrop < Clot::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes = [:id, :product, :sku, :price, :weight, :height, :width, :depth, :deleted_at, :is_master,

@@ -1,4 +1,4 @@
-class Refinery::MenuItemDrop < Liquid::Core::BaseDrop
+class Refinery::MenuItemDrop < Clot::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes =  [:title, :parent, :depth, :menu, :menu_match]

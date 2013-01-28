@@ -1,6 +1,6 @@
 Liquid::Strainer.class_eval do
-  include ActionView::Context
-  include ActionView::Helpers
+  #include ActionView::Context
+  #include ActionView::Helpers
 
   def initialize(context)
     @context = context
@@ -10,6 +10,7 @@ Liquid::Strainer.class_eval do
     @controller ||= @context.registers[:controller]
   end
 
+=begin
   def action_view
     @action_view ||= @context.registers[:action_view]
   end
@@ -19,5 +20,6 @@ Liquid::Strainer.class_eval do
   delegate  :capture, :to => :action_view
   delegate  :spree, :to => :action_view
   delegate  :link_to, :to => :action_view
+=end
 
 end

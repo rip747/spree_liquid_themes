@@ -24,7 +24,7 @@ module Spreefinery
         Dir[File.join(File.dirname(__FILE__), '../../app/liquid', dir, '*.rb')].each { |lib| Rails.configuration.cache_classes ? require(lib) : load(lib) }
       end
 
-      ::ActiveRecord::Base.send(:include, Liquid::ActiveRecord::Droppable)
+     # ::ActiveRecord::Base.send(:include, Liquid::ActiveRecord::Droppable)
 
     end
 

@@ -1,4 +1,4 @@
-class Spree::OrderDrop < Liquid::Core::BaseDrop
+class Spree::OrderDrop < Clot::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes = [:id, :line_items, :ship_address, :bill_address, :user, :adjustments, :number, :email,

@@ -1,4 +1,4 @@
-class Spree::TaxonDrop < Liquid::Core::BaseDrop
+class Spree::TaxonDrop < Clot::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes = [:name]

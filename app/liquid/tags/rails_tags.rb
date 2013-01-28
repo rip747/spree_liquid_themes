@@ -65,10 +65,10 @@ class UrlHelper < Liquid::Tag
   end
 
   def render(context)
-    return "you must specify 'path' and 'type' params for url_helper"  if @method.nil? and @type.nil?
+    return "you must specify 'path' and 'type' params for url_helper tag"  if @method.nil? and @type.nil?
     view = context.registers[:action_view]
     method = "#{@method}_#{@type}".to_sym
-    arg = context[@obj].source
+    arg = context[@obj].source if @obj
 
     url = view.send(method, arg) if view.respond_to?(method)
     url = view.spree.send(method, arg) if view.spree.routes.routes.named_routes.include?(@method)

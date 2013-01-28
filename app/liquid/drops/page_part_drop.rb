@@ -1,4 +1,4 @@
-class Refinery::PagePartDrop < Liquid::Core::BaseDrop
+class Refinery::PagePartDrop < Clot::BaseDrop
 
   class_attribute :liquid_attributes
   self.liquid_attributes =  [:created_at, :updated_at, :id, :page, :position]
