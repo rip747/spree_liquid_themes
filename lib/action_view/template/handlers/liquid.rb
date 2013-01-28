@@ -5,7 +5,7 @@
 class ActionView::Template::Handlers::Liquid
 
 
-  PROTECTED_ASSIGNS = %w( template_root response _session template_class action_name request_origin session template
+  PROTECTED_ASSIGNS = %w( _routes template_root response _session template_class action_name request_origin session template
                           _response url _request _cookies variables_added _flash params _headers request cookies
                           ignore_missing_templates flash _params logger before_filter_chain_aborted headers )
 

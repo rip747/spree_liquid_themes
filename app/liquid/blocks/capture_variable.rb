@@ -3,7 +3,7 @@ module Liquid
   # Capture stores the result of a block into a variable without rendering it inplace.
   #
   #   {% capture_variable heading %}
-  #     Monkeys!
+  #     {% my_tag param1:value1 param2:value2 %}
   #   {% endcapture_variable %}
   #   ...
   #   <h1>{{ heading }}</h1>
@@ -25,8 +25,10 @@ module Liquid
     end
 
     def render(context)
+      context.scopes.last['capture_variable'] = @to
       render_all(@nodelist, context)
-      context.scopes.last[@to] = context['pages_roots']
+      context.scopes.last.with_indifferent_access.except('capture_variable')
+      #context.scopes.last[@to] = context[@to]
       ''
     end
   end

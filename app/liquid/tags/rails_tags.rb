@@ -1,4 +1,25 @@
-class ImageTag < Clot::ClotTag
+# {% cache "some_key" %}
+#   ...
+# {% endcache %}
+
+class Cacher < Liquid::Tag
+  def initialize(tag_name, markup, tokens)
+    super
+    @key= markup.to_s
+  end
+
+  def render(context)
+    Rails.cache.fetch(@key) do
+      super
+    end
+  end
+end
+
+Liquid::Template.register_tag('cache', Cacher)
+
+########################################################################################################################
+
+class ImageTag < Liquid::Tag
 
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
@@ -18,7 +39,8 @@ Liquid::Template.register_tag('image_tag', ImageTag)
 
 ########################################################################################################################
 
-class UrlHelper < Clot::ClotTag
+# Example usage: {% url_helper method:'product' type:'path' obj:'product' %}
+class UrlHelper < Liquid::Tag
 
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
@@ -26,8 +48,8 @@ class UrlHelper < Clot::ClotTag
         @method = $1
       end
 
-      if markup =~ /arg:([_a-z0-9]+)/
-        @arg = $1
+      if markup =~ /obj:([_a-z0-9]+)/
+        @obj = $1
       end
 
       if markup =~ /type:url.*/
@@ -46,7 +68,7 @@ class UrlHelper < Clot::ClotTag
     return "you must specify 'path' and 'type' params for url_helper"  if @method.nil? and @type.nil?
     view = context.registers[:action_view]
     method = "#{@method}_#{@type}".to_sym
-    arg = context[@arg].source
+    arg = context[@obj].source
 
     url = view.send(method, arg) if view.respond_to?(method)
     url = view.spree.send(method, arg) if view.spree.routes.routes.named_routes.include?(@method)

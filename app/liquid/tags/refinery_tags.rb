@@ -1,4 +1,4 @@
-class BootstrapPagesMenu < Clot::ClotTag
+class BootstrapPagesMenu < Liquid::Tag
   def initialize(tag_name, block, tokens)
     super
     @name = block
@@ -13,14 +13,19 @@ Liquid::Template.register_tag('bootstrap_pages_menu', BootstrapPagesMenu)
 
 ########################################################################################################################
 
-class RefineryPagesMenu < Clot::ClotTag
+class RefineryPagesMenu < Liquid::Tag
   def initialize(tag_name, block, tokens)
     super
     @name = block
   end
 
   def render(context)
-    context['pages_roots'] = context.registers[:action_view].refinery_menu_pages.roots
+    if context['capture_variable']
+      context[context['capture_variable']] ||= context.registers[:action_view].refinery_menu_pages.roots.inject([]) { |ary, menu_item| ary << Refinery::MenuItemDrop.new(menu_item); ary }
+    else
+      context['pages_roots'] ||= context.registers[:action_view].refinery_menu_pages.roots.inject([]) { |ary, menu_item| ary << Refinery::MenuItemDrop.new(menu_item); ary }
+    end
+
     ''
   end
 end
