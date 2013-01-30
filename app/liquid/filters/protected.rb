@@ -1,20 +1,25 @@
 module Protected
   extend ERB::Util
-  #extend Formatize::Helper
-  extend ActionView::Helpers::TextHelper
-  extend ActionView::Helpers::SanitizeHelper
-  extend ActionView::Helpers::NumberHelper
-  extend ActionView::Helpers::TagHelper
-  extend ActionView::Helpers::AssetTagHelper
-  extend ActionView::Helpers::UrlHelper
+  extend ActionView::Helpers
+  extend ActionView::Context
 
-  def self.config=(controller)
-    @controller = controller
+
+  class << self
+    include Rails.application.routes.url_helpers
+    include Refinery::Core::Engine.routes.url_helpers
+    include Spree::Core::Engine.routes.url_helpers
+
+    def config=(controller)
+      @controller = controller
+    end
+
+    def config
+      @controller
+    end
+
+    def controller
+      @controller
+    end
   end
-  def self.config
-    @controller
-  end
-  def self.controller
-    @controller
-  end
+
 end

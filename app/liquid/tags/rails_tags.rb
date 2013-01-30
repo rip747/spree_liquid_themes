@@ -37,46 +37,24 @@ end
 
 Liquid::Template.register_tag('image_tag', ImageTag)
 
-########################################################################################################################
-
-# Example usage: {% url_helper method:'product' type:'path' obj:'product' %}
-class UrlHelper < Liquid::Tag
+class TagBuilder < Liquid::Tag
+  QuotedString                = /"[^"]*"|'[^']*'/
+  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
+  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
 
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
-      if markup =~ /method:([_a-z0-9]+)/
-        @method = $1
-      end
-
-      if markup =~ /obj:([_a-z0-9]+)/
-        @obj = $1
-      end
-
-      if markup =~ /type:url.*/
-        @type = 'url'
-      end
-
-      if markup =~ /type:path.*/
-        @type = 'path'
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
       end
     end
-
     super
   end
 
   def render(context)
-    return "you must specify 'path' and 'type' params for url_helper tag"  if @method.nil? and @type.nil?
-    view = context.registers[:action_view]
-    method = "#{@method}_#{@type}".to_sym
-    arg = context[@obj].source if @obj
-
-    url = view.send(method, arg) if view.respond_to?(method)
-    url = view.spree.send(method, arg) if view.spree.routes.routes.named_routes.include?(@method)
-    url = view.refinery.send(method, arg) if view.refinery.routes.routes.named_routes.include?(@method)
-    url = "route #{method} not found"  if url.nil?
-
-    url
+    context['form'].send(@attributes['tag'].to_sym, @attributes.except('tag'))
   end
 end
 
-Liquid::Template.register_tag('url_helper', UrlHelper)
+Liquid::Template.register_tag('tag_builder', TagBuilder)

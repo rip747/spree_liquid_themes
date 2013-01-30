@@ -20,12 +20,47 @@ module RailsFilters
     Time.now.strftime(format)
   end
 
-  def url_for(item, url_helper)
-    @context.registers[:action_view].url_for(@source.url)
-    #result = Rails.application.routes.url_helpers.try(url_helper.to_sym, item.source) if Rails.application.routes.url_helpers.respond_to?(url_helper.to_sym)
-    #result = Refinery::Core::Engine.routes.url_helpers.try(url_helper.to_sym, item.source) if Refinery::Core::Engine.routes.url_helpers.respond_to?(url_helper.to_sym)
-    #result = Spree::Core::Engine.routes.url_helpers.try(url_helper.to_sym, item.source)    if Spree::Core::Engine.routes.url_helpers.respond_to?(url_helper.to_sym)
-    result || 'not found'
+  def script_tag(url)
+    Protected.config = @context.registers[:controller]
+    Protected.javascript_include_tag url
+  end
+
+  def stylesheet_tag(url)
+    return '' if url.blank?
+
+    Protected.config = @context.registers[:controller]
+    Protected.stylesheet_link_tag url
+  end
+
+  def image_tag(url, title = nil, size = nil)
+    return '' if url.blank?
+
+    Protected.config = @context.registers[:controller]
+
+    options = title.present? ? {:title => title, :alt => title} : {}
+    options[:size] = size if size.present?
+    Protected.image_tag url, options
+  end
+
+  def link_to(url, text = nil)
+    Protected.link_to text, url
+  end
+
+  def url_helper(url_helper, object=nil)
+    return if url_helper.nil?
+    Protected.config = @context.registers[:controller]
+
+    if object.nil?
+      Protected.send(url_helper.to_sym) || 'not found'
+    else
+      Protected.send(url_helper.to_sym, object.source) || 'not found'
+    end
+
+  end
+
+  def url_for(obj)
+    Protected.config = @context.registers[:controller]
+    Protected.url_for(obj) || 'not found'
   end
 
 end

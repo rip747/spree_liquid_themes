@@ -4,7 +4,6 @@
 #
 class ActionView::Template::Handlers::Liquid
 
-
   PROTECTED_ASSIGNS = %w( _routes template_root response _session template_class action_name request_origin session template
                           _response url _request _cookies variables_added _flash params _headers request cookies
                           ignore_missing_templates flash _params logger before_filter_chain_aborted headers )
@@ -77,7 +76,7 @@ class ActionView::Template::Handlers::Liquid
 
     variables = assigns.reject{ |k,v| PROTECTED_ASSIGNS.include?(k) }
 
-    liquid = Liquid::Template.parse(template)
+    liquid = Liquid::Template.parse(CGI::unescape(template))
     liquid.render(variables, :filters => filters, :registers => {:file_system => partials_path, :action_view => @view, :controller => @view.controller})
   end
 
