@@ -1,10 +1,6 @@
 class Spree::TaxonomyDrop < Clot::BaseDrop
 
-  class_attribute :liquid_attributes
-  self.liquid_attributes = [:name, :taxons]
+  self.liquid_attributes = [:name, :taxons, :root]
 
-  def root
-    @source.root
-  end
 
 end

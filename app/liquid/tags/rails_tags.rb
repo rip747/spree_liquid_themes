@@ -53,6 +53,9 @@ class TagBuilder < Liquid::Tag
   end
 
   def render(context)
+    if @attributes.has_key?('html')
+      @attributes['html'] = eval(@attributes['html'].chomp('"').reverse.chomp('"').reverse)
+    end
     context['form'].send(@attributes['tag'].to_sym, @attributes.except('tag'))
   end
 end

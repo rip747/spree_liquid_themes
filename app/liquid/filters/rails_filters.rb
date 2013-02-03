@@ -1,5 +1,10 @@
 module RailsFilters
 
+  def truncate(text, length = 50)
+    Protected.truncate(text, length)
+  end
+
+
   def yaml_to_hash(str)
     YAML.load(str)
   end
@@ -42,7 +47,7 @@ module RailsFilters
     Protected.image_tag url, options
   end
 
-  def link_to(url, text = nil)
+  def link_to(text, url)
     Protected.link_to text, url
   end
 

@@ -1,7 +1,10 @@
 class Spree::LineItemDrop < Clot::BaseDrop
 
-  class_attribute :liquid_attributes
-  self.liquid_attributes = [:id, :quantity, :price, :product, :order, :variant]
+  self.liquid_attributes = [:id, :quantity, :price, :order]
+
+  def variant
+    @source.variant
+  end
 
   def increment_quantity
     @source.quantity += 1
@@ -25,6 +28,14 @@ class Spree::LineItemDrop < Clot::BaseDrop
 
   def copy_price
     @source.price = @source.variant.price if @source.variant && @source.price.nil?
+  end
+
+  def single_money
+    @source.single_money
+  end
+
+  def display_amount
+    @source.display_amount
   end
 
 end

@@ -1,6 +1,6 @@
 class Refinery::UserDrop < Clot::BaseDrop
 
-  class_attribute :liquid_attributes
+  #class_attribute :liquid_attributes
   self.liquid_attributes = [:email, :login]
 
   def orders

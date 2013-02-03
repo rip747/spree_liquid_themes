@@ -27,8 +27,7 @@ module Liquid
     def render(context)
       context.scopes.last['capture_variable'] = @to
       render_all(@nodelist, context)
-      context.scopes.last.with_indifferent_access.except('capture_variable')
-      #context.scopes.last[@to] = context[@to]
+      context.scopes.last.except!('capture_variable')
       ''
     end
   end

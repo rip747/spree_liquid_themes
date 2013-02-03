@@ -1,17 +1,6 @@
 class Refinery::PagePartDrop < Clot::BaseDrop
 
-  class_attribute :liquid_attributes
-  self.liquid_attributes =  [:created_at, :updated_at, :id, :page, :position]
-
-
-  def initialize(source, options = {})
-    super source
-    @options ||= options
-  end
-
-  def context=(current_context)
-    @context = current_context
-  end
+  self.liquid_attributes = [:created_at, :updated_at, :id, :page, :position]
 
   def page_id
     @page_id ||= @source.refinery_page_id
