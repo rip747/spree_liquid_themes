@@ -2,7 +2,7 @@ require 'refinerycms-core'
 require 'spree_core'
 require 'editable'
 require 'hash'
-require 'clot'
+require 'clot_engine'
 
 module SpreefineryEngine
   require 'spreefinery/engine'
