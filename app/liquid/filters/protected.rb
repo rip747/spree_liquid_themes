@@ -1,6 +1,6 @@
 module Protected
   extend ERB::Util
-  #extend ActionView::Helpers
+  extend ActionView::Helpers
   extend ActionView::Helpers::UrlHelper
   extend ActionView::Helpers::TagHelper
   #extend ActionView::Context
