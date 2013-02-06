@@ -24,6 +24,7 @@ class ActionView::Template::Handlers::Liquid
     assigns['site_name'] = Refinery::Core.site_name
     assigns['theme_assigns'] = Refinery::Themes::Theme.current_theme_config['assigns']
     assigns['theme_config'] = Refinery::Themes::Theme.current_theme_config['config']
+    assigns['spree_config'] = Spree::Config
 
     #TODO
     #assigns = (@view.instance_variables.map{ |i| i.to_s} - PROTECTED_INSTANCE_VARIABLES).inject({}) do |hash, var_name|
@@ -71,7 +72,7 @@ class ActionView::Template::Handlers::Liquid
                                                        :file_system => partials_path,
                                                        :action_view => @view,
                                                        :controller => @view.controller
-                                                   })
+                                                   }).html_safe
     end if assigns['page']
 
     variables = assigns.reject{ |k,v| PROTECTED_ASSIGNS.include?(k) }

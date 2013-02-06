@@ -1,12 +1,11 @@
-module Spreefinery
+module SpreefineryThemes
   class Engine < Rails::Engine
     include Refinery::Engine
-    isolate_namespace Spreefinery::Engine
+    isolate_namespace SpreefineryThemes::Engine
 
-    engine_name :spreefinery
+    engine_name :spreefinery_themes
 
     def self.activate
-
       #ActionController::Base.prepend_view_path(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/views"))
       ActionController::Base.prepend_view_path(Rails.root.join("themes/current/views"))
 
@@ -28,9 +27,9 @@ module Spreefinery
 
     end
 
-    initializer "register spreefinery plugin" do
+    initializer "register spreefinery_themes plugin" do
       Refinery::Plugin.register do |plugin|
-        plugin.name = "spreefinery"
+        plugin.name = "spreefinery_themes"
         plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.themes_admin_themes_path }
         plugin.pathname = root
         plugin.menu_match = /refinery\/themes\/?(settings|editor|upload)?/
@@ -38,7 +37,7 @@ module Spreefinery
     end
 
     config.after_initialize do
-      Refinery.register_extension(Spreefinery::Engine)
+      Refinery.register_extension(SpreefineryThemes::Engine)
     end
 
     config.to_prepare &method(:activate).to_proc

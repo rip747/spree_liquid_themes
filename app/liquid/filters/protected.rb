@@ -7,6 +7,7 @@ module Protected
 
 
   class << self
+    include ActionDispatch::Routing
     include Rails.application.routes.url_helpers
     include Refinery::Core::Engine.routes.url_helpers
     include Spree::Core::Engine.routes.url_helpers

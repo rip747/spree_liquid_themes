@@ -17,7 +17,7 @@ module Refinery
 
         def reset
           FileUtils.rm_rf(Rails.root.join('themes', 'default')) if File.exist?(Rails.root.join('themes', 'default'))
-          FileManager.unzip_file(File.join(Spreefinery::Engine.root, "theme_template", "default.zip"))
+          FileManager.unzip_file(File.join(SpreefineryThemes::Engine.root, "theme_template", "default.zip"))
           redirect_to themes_admin_root_url, :notice =>"The default theme successfully reset!"
         end
 
