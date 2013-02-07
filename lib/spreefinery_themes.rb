@@ -4,7 +4,7 @@ require 'editable'
 require 'hash'
 require 'clot_engine'
 
-module SpreefineryThemesEngine
+module SpreefineryThemes
   require 'spreefinery/engine'
 
   class << self
