@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'spreefinery_core'
   s.add_dependency 'rubyzip'
   s.add_dependency 'clot_engine'
+  s.add_dependency 'liquid', '>= 2.4.1'
 end
