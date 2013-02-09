@@ -3,7 +3,7 @@
 Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.name = 'spreefinery_themes'
-  s.version = '1.0'
+  s.version = '1.0.1'
   s.authors = ["Alexander Negoda, Zee Yang"]
   s.email = ["alexander.negoda@gmail.com, zee.yang@gmail.com"]
   s.description = 'Themes Engine for RefineryCMS + Spree E-Commerce'
