@@ -1,7 +1,7 @@
 en:
   refinery:
     plugins:
-      spreefinery:
+      spreefinery_themes:
         title: Themes
     themes:
       admin:
