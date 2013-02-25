@@ -1,0 +1,20 @@
+class Spree::ShippingRateDrop #<  Liquid::BaseDrop
+  #self.liquid_attributes = [:id]
+
+  def id
+    @source.id
+  end
+
+  def name
+    @source.name
+  end
+
+  def display_price
+    @source.display_price
+  end
+
+  def to_liquid
+    self
+  end
+
+end
