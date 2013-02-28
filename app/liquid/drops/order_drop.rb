@@ -1,6 +1,6 @@
 class Spree::OrderDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:id, :line_items,  :user, :adjustments, :number, :email, :total, :item_total, :ship_total,
+  self.liquid_attributes = [:id, :line_items,  :user, :number, :email, :total, :item_total, :ship_total,
                             :adjustment_total, :state, :tax_total, :special_instructions]
 
   def token
@@ -23,6 +23,14 @@ class Spree::OrderDrop < Clot::BaseDrop
     @source.ship_address
   end
 
+  def billing_firstname
+    @source.billing_firstname
+  end
+
+  def billing_lastname
+    @source.billing_lastname
+  end
+
   def rate_hash
    @source.rate_hash.inject([]) do |result, rate|
       hash = {}
@@ -35,5 +43,26 @@ class Spree::OrderDrop < Clot::BaseDrop
       result << hash
    end
   end
+
+  def available_payment_methods
+    @source.available_payment_methods
+  end
+
+  def credit_cards
+    @source.credit_cards
+  end
+
+  def completed
+    @source.completed?
+  end
+
+  def to_param
+    @source.number.to_s.to_url.upcase
+  end
+
+  def adjustments
+    @source.adjustments.eligible
+  end
+
 
 end

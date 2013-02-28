@@ -21,4 +21,12 @@ class Spree::VariantDrop < Clot::BaseDrop
     @source.options_text
   end
 
+  def images
+    @source.images
+  end
+
+  def display_amount
+    @source.display_amount
+  end
+
 end

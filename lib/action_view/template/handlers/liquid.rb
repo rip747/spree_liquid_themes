@@ -36,7 +36,6 @@ class ActionView::Template::Handlers::Liquid
     assigns.merge!(local_assigns.stringify_keys)
 
     @view.controller._helpers.instance_methods.each do |method|
-    #@view.public_methods.each do |method|
       assigns[method.to_s] = Proc.new { @view.send(method) }
     end
 

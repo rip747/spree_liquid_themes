@@ -54,11 +54,12 @@ module RailsFilters
   def url_helper(url_helper, object=nil)
     return if url_helper.nil?
     Protected.config = @context.registers[:controller]
+    arg = object.is_a?(Liquid::Drop) ? object.source : object
 
     if object.nil?
       Protected.send(url_helper.to_sym) || 'not found'
     else
-      Protected.send(url_helper.to_sym, object.source) || 'not found'
+      Protected.send(url_helper.to_sym, arg) || 'not found'
     end
 
   end
