@@ -2,6 +2,10 @@ Liquid::Strainer.class_eval do
   include ActionView::Context
   include ActionView::Helpers
 
+  include Rails.application.routes.url_helpers
+  include Refinery::Core::Engine.routes.url_helpers
+  include Spree::Core::Engine.routes.url_helpers
+
   def initialize(context)
     @context = context
   end

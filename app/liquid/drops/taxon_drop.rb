@@ -1,6 +1,14 @@
 class Spree::TaxonDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:name, :description, :children, :products, :taxonomy, :parent]
+  self.liquid_attributes = [:children, :products, :taxonomy, :parent]
+
+  def name
+    @source.name
+  end
+
+  def description
+    @source.description
+  end
 
   def siblings
     @source.siblings

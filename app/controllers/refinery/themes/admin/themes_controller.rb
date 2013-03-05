@@ -27,13 +27,10 @@ module Refinery
           FileUtils.rm_rf(Rails.root.join('themes/current'))
           FileUtils.ln_sf(Refinery::Themes::Theme.theme_path, Rails.root.join('themes/current'))
 
+          ActionController::Base.view_paths = ActionView::PathSet.new(ActionController::Base.view_paths.paths)
           ::Refinery::Page.expire_page_caching
           #Rails.cache.clear
 
-
-          # TODO remove this hack for update current layout file.
-          file = File.read(Rails.root.join('themes/current/views/layouts/site.liquid'))
-          File.open(Rails.root.join('themes/current/views/layouts/site.liquid'), 'w+b'){|f| f.write(file)}
 
           redirect_to themes_admin_root_url
         end
