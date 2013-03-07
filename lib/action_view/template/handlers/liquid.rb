@@ -56,11 +56,14 @@ class ActionView::Template::Handlers::Liquid
     #  assigns[:layout_prerender] = true
     #end
 
+
+
     @view.view_flow.content.each do  |key, content|
       assigns["content_for_#{key.to_s}"] = content
     end
 
     partials_path = Liquid::LocalFileSystem.new(Refinery::Themes::Theme.theme_path.join("views/partials"))
+    #Liquid::Template.file_system = Liquid::LocalFileSystem.new( @view.controller.view_paths )
 
     assigns['page'].parts.each do |part|
       Liquid::Template.parse(part.body).render(assigns)
@@ -77,7 +80,8 @@ class ActionView::Template::Handlers::Liquid
     variables = assigns.reject{ |k,v| PROTECTED_ASSIGNS.include?(k) }
 
     liquid = Liquid::Template.parse(CGI::unescape(template))
-    liquid.render(variables, :filters => filters, :registers => {:file_system => partials_path, :action_view => @view, :controller => @view.controller})
+    liquid.render(variables, :filters => filters, :registers => {:file_system => partials_path, :action_view => @view,
+                                                                 :controller => @view.controller})
   end
 
   def compilable?

@@ -162,3 +162,16 @@ class GetProductsByTaxon < Liquid::Tag
 end
 
 Liquid::Template.register_tag('get_products_by_taxon', GetProductsByTaxon)
+
+########################################################################################################################
+
+class PromoCount < Liquid::Tag
+
+  def render(context)
+    Spree::Promotion.count
+  end
+end
+
+Liquid::Template.register_tag('promotion_count', PromoCount)
+
+########################################################################################################################

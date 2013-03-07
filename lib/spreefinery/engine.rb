@@ -6,9 +6,6 @@ module SpreefineryThemes
     engine_name :spreefinery_themes
 
     def self.activate
-      #ActionController::Base.prepend_view_path(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/views"))
-      ActionController::Base.prepend_view_path(Rails.root.join("themes/current/views"))
-
       Dir.glob(File.join(File.dirname(__FILE__), "../../app/**/*_decorator*.rb")) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
