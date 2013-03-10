@@ -5,7 +5,7 @@ class BootstrapPagesMenu < Liquid::Tag
   end
 
   def render(context)
-    context.registers[:controller].render :partial => "refinery/shared/pages_menu"
+    Refinery::Pages::MenuPresenter.new(context.registers[:action_view].refinery_menu_pages, context.registers[:action_view]).to_html
   end
 end
 

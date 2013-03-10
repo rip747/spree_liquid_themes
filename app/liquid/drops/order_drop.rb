@@ -64,5 +64,9 @@ class Spree::OrderDrop < Clot::BaseDrop
     @source.adjustments.eligible
   end
 
+  def shipping_method
+    @source.shipping_method
+  end
+
 
 end

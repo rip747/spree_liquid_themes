@@ -22,6 +22,25 @@ module Refinery
         end
 
         def select_theme
+          paths = ActionController::Base.view_paths.paths
+
+          paths.each do |path|
+            if path.to_s.eql?(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/views").to_s)
+              paths.delete path
+            end
+          end
+
+          assets_paths = Rails.application.config.assets.paths
+
+          assets_paths.each do |path|
+            if path.eql?(Refinery::Themes::Theme.theme_path.join("assets/javascripts")) ||
+                path.eql?(Refinery::Themes::Theme.theme_path.join("assets/stylesheets")) ||
+                path.eql?(Refinery::Themes::Theme.theme_path.join("assets/images"))
+
+              assets_paths.delete path
+            end
+          end
+
           ::Refinery::Setting.set(:current_theme, params[:key])
           @themes = Refinery::Themes::Theme.all
           #FileUtils.rm_rf(Rails.root.join('themes/current'))
@@ -33,7 +52,7 @@ module Refinery
           Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/images")
 
           #ActionController::Base.view_paths = ActionView::PathSet.new(ActionController::Base.view_paths.paths)
-          ::Refinery::Page.expire_page_caching
+          #::Refinery::Page.expire_page_caching
           #Rails.cache.clear
 
           redirect_to themes_admin_root_url
