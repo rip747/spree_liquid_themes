@@ -1,6 +1,5 @@
 Spree::BaseHelper.module_eval do
   def breadcrumbs_json(taxon)
-    return "" if current_page?("/") || taxon.nil?
     crumbs = [{ :label => t(:home), :link => spree.root_path }]
     if taxon
       crumbs << { :label => t(:products), :link => products_path }
