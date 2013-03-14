@@ -1,4 +1,4 @@
-# origianl: https://gist.github.com/4605222
+# original: https://gist.github.com/4605222
 # variants:
 # https://gist.github.com/4605162
 #
