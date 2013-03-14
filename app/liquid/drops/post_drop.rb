@@ -1,6 +1,6 @@
 class Refinery::Blog::PostDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:created_at, :updated_at, :id, :draft, :published_at, :author, :cached_slug,
+  self.liquid_attributes = [:created_at, :updated_at, :id, :draft, :published_at, :author,
                             :custom_url, :custom_teaser, :source_url, :source_url_title, :access_count, :slug,
                             :categories, :comments]
 
