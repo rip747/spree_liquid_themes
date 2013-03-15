@@ -68,5 +68,13 @@ class Spree::OrderDrop < Clot::BaseDrop
     @source.shipping_method
   end
 
+  def same_as_bill_address
+    @source.ship_address.same_as?(@source.bill_address)
+  end
+
+  def same_as_ship_address
+    @source.bill_address.same_as?(@source.ship_address)
+  end
+
 
 end

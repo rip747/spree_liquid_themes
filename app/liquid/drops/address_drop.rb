@@ -7,4 +7,5 @@ class Spree::AddressDrop < Clot::BaseDrop
   def empty
     @source.empty?
   end
+
 end

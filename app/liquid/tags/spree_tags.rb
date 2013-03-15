@@ -100,9 +100,9 @@ class GetProducts < Liquid::Tag
     end
 
     if context['capture_variable']
-      context[context['capture_variable']] ||= @products.per(@per_page)
+      context[context['capture_variable']] = @products.per(@per_page)
     else
-      context['products'] ||= @products.per(@per_page)
+      context['products'] = @products.per(@per_page)
     end
 
     ''
