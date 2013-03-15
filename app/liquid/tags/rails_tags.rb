@@ -85,3 +85,31 @@ class TagBuilder < Liquid::Tag
 end
 
 Liquid::Template.register_tag('tag_builder', TagBuilder)
+
+########################################################################################################################
+
+class Paginator < Liquid::Tag
+
+  QuotedString                = /"[^"]*"|'[^']*'/
+  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
+  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
+
+  def initialize(tag_name, markup, tokens)
+    unless markup.empty?
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
+      end
+    end
+    super
+  end
+
+  def render(context)
+    return unless context[@attributes['collection']].respond_to?(:num_pages)
+    context.registers[:action_view].will_paginate(context[@attributes['collection']])
+  end
+end
+
+Liquid::Template.register_tag('paginator', Paginator)
+
+#######################################################################################################################

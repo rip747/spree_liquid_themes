@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ["Alexander Negoda, Zee Yang"]
   s.email = ["alexander.negoda@gmail.com, zee.yang@gmail.com"]
   s.description = 'Themes Engine for RefineryCMS + Spree E-Commerce'
-  s.summary = 'Themes Support Engine for RefineryCMS + Spree E-Commerce based on Liquid Templating language'
+  s.summary = 'Themes Support Engine for RefineryCMS + Spree E-Commerce based on Liquid Templating Language'
   s.require_paths = %w(lib)
   s.files = Dir["{app,config,db,lib}/**/*"] + ["readme.md"]
   s.required_ruby_version = '>= 1.9.3'

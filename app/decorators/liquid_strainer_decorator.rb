@@ -22,6 +22,6 @@ Liquid::Strainer.class_eval do
   delegate :params, :to => :request
   delegate  :capture, :to => :action_view
   delegate  :spree, :to => :action_view
-  #delegate  :link_to, :to => :action_view
+  delegate  :refinery, :to => :action_view
 
 end

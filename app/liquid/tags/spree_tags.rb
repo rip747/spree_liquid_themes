@@ -72,7 +72,6 @@ Liquid::Template.register_tag('product_image_url', ProductImageUrl)
 ########################################################################################################################
 
 class GetProducts < Liquid::Tag
-
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
       if markup =~ /per_page:(\d+)/
@@ -90,6 +89,7 @@ class GetProducts < Liquid::Tag
   end
 
   def render(context)
+    context.registers[:controller].params[:per_page] = @per_page
     @searcher = Spree::Config.searcher_class.new(context.registers[:controller].params)
     @searcher.current_user = context.registers[:controller].try_spree_current_user
     @searcher.current_currency = context.registers[:action_view].current_currency
@@ -100,9 +100,9 @@ class GetProducts < Liquid::Tag
     end
 
     if context['capture_variable']
-      context[context['capture_variable']] = @products.per(@per_page)
+      context[context['capture_variable']] = @products
     else
-      context['products'] = @products.per(@per_page)
+      context['products'] = @products
     end
 
     ''
