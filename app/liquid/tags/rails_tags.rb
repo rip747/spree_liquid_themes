@@ -105,7 +105,6 @@ class Paginator < Liquid::Tag
   end
 
   def render(context)
-    return unless context[@attributes['collection']].respond_to?(:num_pages)
     context.registers[:action_view].will_paginate(context[@attributes['collection']])
   end
 end
