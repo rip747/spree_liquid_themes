@@ -175,3 +175,15 @@ end
 Liquid::Template.register_tag('promotion_count', PromoCount)
 
 ########################################################################################################################
+
+
+class SpreeSearchForm < Liquid::Tag
+
+  def render(context)
+    context.registers[:action_view].render(:partial => 'spree/shared/search')
+  end
+end
+
+Liquid::Template.register_tag('spree_search_form', SpreeSearchForm)
+
+########################################################################################################################
