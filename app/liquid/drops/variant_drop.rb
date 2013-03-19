@@ -29,4 +29,12 @@ class Spree::VariantDrop < Clot::BaseDrop
     @source.display_amount
   end
 
+  def prices
+    @source.prices
+  end
+
+  def default_price
+    @source.default_price
+  end
+
 end
