@@ -73,6 +73,7 @@ module Refinery
             file.split("/").last.gsub(/.liquid/, "")
           }
         end
+
       end
     end
   end

@@ -1,5 +1,6 @@
 Rails.application.routes.prepend  do
   match "/themes/:key/image.png", :to => "refinery/themes/theme#sreenshot"
+  match "/themes/assets/:mime_type/*file_path", :to => "refinery/themes/theme#asset", :via => :get
 end
 
 Refinery::Core::Engine.routes.prepend do

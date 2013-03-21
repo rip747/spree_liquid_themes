@@ -22,7 +22,6 @@ module Refinery
         end
 
         def select_theme
-
           # view_paths reloading hack
           paths = ActionController::Base.view_paths.paths
 
@@ -46,6 +45,8 @@ module Refinery
           ::Refinery::Setting.set(:current_theme, params[:key])
 
           reload_assets_paths
+
+          I18n.load_path += Dir[Refinery::Themes::Theme.theme_path.join('config', 'locales', '*.{rb,yml}').to_s]
 
           redirect_to themes_admin_root_url
         end
