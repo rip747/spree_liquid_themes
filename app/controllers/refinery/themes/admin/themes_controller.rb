@@ -27,11 +27,9 @@ module Refinery
           return unless params[:key]
           ::Refinery::Setting.set(:current_theme, params[:key])
 
-
           Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
           Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s
           Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/images").to_s
-          Rails.application.config.assets.paths.each { |path| Rails.application.assets.append_path(path) }
 
           ::I18n.load_path += Dir[Refinery::Themes::Theme.theme_path.join('config', 'locales', '*.{rb,yml}').to_s]
 
