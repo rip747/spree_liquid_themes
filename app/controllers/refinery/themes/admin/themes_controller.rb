@@ -1,3 +1,5 @@
+require 'sprockets'
+
 module Refinery
   module Themes
     module Admin
@@ -22,31 +24,16 @@ module Refinery
         end
 
         def select_theme
-          # view_paths reloading hack
-          paths = ActionController::Base.view_paths.paths
-
-          paths.each do |path|
-            if path.to_s.eql?(Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/views").to_s)
-              paths.delete path
-            end
-          end
-
-          assets_paths = Rails.application.config.assets.paths
-
-          assets_paths.each do |path|
-            if path.eql?(Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s) ||
-                path.eql?(Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s) ||
-                path.eql?(Refinery::Themes::Theme.theme_path.join("assets/images").to_s)
-
-              assets_paths.delete path
-            end
-          end
-
+          return unless params[:key]
           ::Refinery::Setting.set(:current_theme, params[:key])
 
-          reload_assets_paths
 
-          I18n.load_path += Dir[Refinery::Themes::Theme.theme_path.join('config', 'locales', '*.{rb,yml}').to_s]
+          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
+          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s
+          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/images").to_s
+          Rails.application.config.assets.paths.each { |path| Rails.application.assets.append_path(path) }
+
+          ::I18n.load_path += Dir[Refinery::Themes::Theme.theme_path.join('config', 'locales', '*.{rb,yml}').to_s]
 
           redirect_to themes_admin_root_url
         end
@@ -67,16 +54,6 @@ module Refinery
           redirect_to themes_admin_root_url, :notice =>"A new theme was successfully uploaded and installed!"
         end
 
-
-        private
-
-        def reload_assets_paths
-          ActionController::Base.prepend_view_path  Rails.root.join("themes/#{Refinery::Themes::Theme.current_theme_key}/views")
-          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
-          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s
-          Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/images").to_s
-          Rails.application.config.assets.paths.each { |path| Rails.application.assets.append_path(path) }
-        end
       end
     end
   end
