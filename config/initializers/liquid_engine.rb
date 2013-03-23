@@ -2,6 +2,10 @@ require 'action_view/template/handlers/liquid'
 ActionView::Template.register_template_handler :liquid, ActionView::Template::Handlers::Liquid
 
 #ActionController::Base.prepend_view_path  Refinery::Themes::Theme.theme_path.join("views")
+
+# TODO precompile for files of the current theme. See http://stackoverflow.com/a/8827757/1324453
+Rails.application.config.assets.compile = true
+
 Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
 Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s
 Rails.application.config.assets.paths << Refinery::Themes::Theme.theme_path.join("assets/images").to_s
