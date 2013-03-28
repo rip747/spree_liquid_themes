@@ -24,4 +24,4 @@ Contributing
 Copyright
 ==============
 
-Copyright (c) 2012 by Zee Yang <zee.yang@gmail.com> & Alexander Negoda <alexander.negoda@gmail.com>. See LICENSE.txt for further details.
+Copyright (c) 2012 by Alexander Negoda <alexander.negoda@gmail.com>. See LICENSE.txt for further details.
