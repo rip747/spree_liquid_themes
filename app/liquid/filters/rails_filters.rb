@@ -1,5 +1,7 @@
 module RailsFilters
 
+  include ::Clot::TagHelper
+
   def truncate(text, length = 50)
     Protected.truncate(text, length)
   end
@@ -54,6 +56,10 @@ module RailsFilters
   def url_helper(*args)
     return '' if args.empty?
     url_helper = args.shift.to_sym
+
+    args.each_with_index do |value, index|
+      args[index] = resolve_value(value, @context)
+    end
 
     # TODO refactoring this
     if Refinery::Core::Engine.routes.url_helpers.respond_to? url_helper
