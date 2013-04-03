@@ -1,13 +1,15 @@
 SpreeFinery
 ==============
 
-Themes Engine for Spree+RefineryCMS with support Liquid markup language
+The Themes Engine for Spree+RefineryCMS with support Liquid markup language
+
+The installation process: https://gist.github.com/greendog/4985240
 
 
 TODO
 ===========
- https://github.com/rtomayko/tilt
- https://github.com/judofyr/temple
+https://github.com/rtomayko/tilt
+https://github.com/judofyr/temple
 
 
 Contributing
