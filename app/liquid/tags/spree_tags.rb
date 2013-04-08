@@ -187,3 +187,35 @@ end
 Liquid::Template.register_tag('spree_search_form', SpreeSearchForm)
 
 ########################################################################################################################
+class ProductsFilters < Liquid::Tag
+  def render(context)
+    # imported from spree/shared/_filters.html.erb
+    template = context.registers[:action_view]
+    filters = context['taxon'] ? context['taxon'].source.applicable_filters : [::Spree::ProductFilters.all_taxons]
+    template.params[:search] ||= {}
+    context['filters'] = filters.map{|filter|
+      filter[:labels] || filter[:conds].map {|m,c| [m,m]}
+      filter[:inputs] = []
+      next if filter[:labels].empty?
+      filter[:labels] = filter[:labels].map do |nm,val|
+        label = "#{filter[:name]}_#{nm}".gsub(/\s+/,'_')
+        filter[:inputs] << template.tag(
+            :input,
+            :type => 'checkbox',
+            :id => label,
+            :name => "search[#{filter[:scope].to_s}][]",
+            :value => val,
+            :checked => (template.params[:search][filter[:scope]] && template.params[:search][filter[:scope]].include?(val.to_s))
+        )
+        template.content_tag(:label, :for => label) do
+          nm
+        end
+      end
+      filter.stringify_keys
+    }
+  end
+end
+
+Liquid::Template.register_tag('products_filters', ProductsFilters)
+
+########################################################################################################################

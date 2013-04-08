@@ -1,6 +1,6 @@
 class Spree::TaxonDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:children, :products, :taxonomy, :parent]
+  self.liquid_attributes = [:products, :taxonomy, :parent]
 
   def name
     @source.name
@@ -28,5 +28,9 @@ class Spree::TaxonDrop < Clot::BaseDrop
 
   def permalink
     @source.permalink
+  end
+
+  def children_empty
+    @source.children.empty?
   end
 end
