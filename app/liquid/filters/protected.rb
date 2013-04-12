@@ -3,7 +3,6 @@ module Protected
   extend ActionView::Helpers
   extend ActionView::Helpers::UrlHelper
   extend ActionView::Helpers::TagHelper
-  #extend ActionView::Context
 
 
   class << self

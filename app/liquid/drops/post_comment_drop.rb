@@ -1,5 +1,8 @@
 class Refinery::Blog::CommentDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:created_at, :updated_at, :id, :post, :spam, :name, :email, :body, :state]
+  self.liquid_attributes = [:post, :spam, :name, :email, :message]
 
+  def message
+    @source.message.html_safe
+  end
 end

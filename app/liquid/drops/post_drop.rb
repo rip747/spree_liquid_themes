@@ -1,21 +1,45 @@
 class Refinery::Blog::PostDrop < Clot::BaseDrop
 
-  self.liquid_attributes = [:created_at, :updated_at, :id, :draft, :published_at, :author,
+  self.liquid_attributes = [:id, :created_at, :updated_at, :draft, :author,
                             :custom_url, :custom_teaser, :source_url, :source_url_title, :access_count, :slug,
-                            :categories, :comments]
+                            :comments, :tags]
 
   def body
-    liquid = Liquid::Template.parse @source.body
+    liquid = Liquid::Template.parse @source.body.html_safe
     liquid.render(@context.environments[0])
   end
 
   def title
-    liquid = Liquid::Template.parse @source.title
+    liquid = Liquid::Template.parse @source.title.html_safe
     liquid.render(@context.environments[0])
   end
 
-  def live?
+  def live
     @source.live?
+  end
+
+  def tag_list
+     @source.tag_list
+  end
+
+  def base_tags
+    @source.base_tags
+  end
+
+  def approved_comments_count
+    @source.comments.approved.count
+  end
+
+  def approved_comments
+    @source.comments.approved
+  end
+
+  def published_at
+    @source.published_at.to_date
+  end
+
+  def categories
+    @source.categories
   end
 
 end

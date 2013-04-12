@@ -1,9 +1,10 @@
 module RailsFilters
 
-  include ::Clot::TagHelper
+  include Clot::TagHelper
 
   def truncate(text, length = 50)
-    Protected.truncate(text, length)
+    return unless text.present?
+    Protected.truncate(text, :length => length)
   end
 
 
@@ -51,26 +52,6 @@ module RailsFilters
 
   def link_to(text, url)
     Protected.link_to text, url
-  end
-
-  def url_helper(*args)
-    return '' if args.empty?
-    url_helper = args.shift.to_sym
-
-    args.each_with_index do |value, index|
-      args[index] = resolve_value(value, @context)
-    end
-
-    # TODO refactoring this
-    if Refinery::Core::Engine.routes.url_helpers.respond_to? url_helper
-      args.empty? ? Refinery::Core::Engine.routes.url_helpers.send(url_helper) || 'not found' : Refinery::Core::Engine.routes.url_helpers.send(url_helper, *args) || 'not found'
-    elsif Spree::Core::Engine.routes.url_helpers.respond_to? url_helper
-      args.empty? ? Spree::Core::Engine.routes.url_helpers.send(url_helper) || 'not found' : Spree::Core::Engine.routes.url_helpers.send(url_helper, *args) || 'not found'
-    elsif Rails.application.routes.url_helpers.respond_to? url_helper
-      args.empty? ? Rails.application.routes.url_helpers.send(url_helper) || 'not found' : Rails.application.routes.url_helpers.send(url_helper, *args) || 'not found'
-    else
-      'not found'
-    end
   end
 
   def url_for(obj)

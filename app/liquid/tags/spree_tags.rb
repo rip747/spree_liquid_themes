@@ -11,7 +11,8 @@ class ImageForProduct < Liquid::Tag
   end
 
   def render(context)
-    context.registers[:action_view].send("#{@style}_image".to_sym, context["product"].source)
+    @result = context.registers[:action_view].send("#{@style}_image".to_sym, context["product"].source)
+    super(context)
   end
 end
 
@@ -35,7 +36,8 @@ class VariantsFor < Liquid::Tag
   def render(context)
     return "object with name #{@object} not found" if context[@object].nil?
     @product = context[@object].source
-    context.registers[:action_view].render(:partial => 'spree/products/variants')
+    @result = context.registers[:action_view].render(:partial => 'spree/products/variants')
+    super(context)
   end
 end
 
@@ -63,7 +65,8 @@ class ProductImageUrl < Liquid::Tag
   end
 
   def render(context)
-    context[@object].source.images.first.attachment.url(@style.to_sym)
+    @result = context[@object].source.images.first.attachment.url(@style.to_sym)
+    super(context)
   end
 end
 
@@ -93,19 +96,10 @@ class GetProducts < Liquid::Tag
     @searcher = Spree::Config.searcher_class.new(context.registers[:controller].params)
     @searcher.current_user = context.registers[:controller].try_spree_current_user
     @searcher.current_currency = context.registers[:action_view].current_currency
-    @products = @searcher.retrieve_products
+    @result = @searcher.retrieve_products
 
-    if @type == 'latest'
-
-    end
-
-    if context['capture_variable']
-      context[context['capture_variable']] = @products
-    else
-      context['products'] = @products
-    end
-
-    ''
+    context['products'] = @result
+    super(context)
   end
 end
 
@@ -147,17 +141,10 @@ class GetProductsByTaxon < Liquid::Tag
     @searcher.current_currency = Spree::Config[:currency]
     @products = @searcher.retrieve_products
 
-    if @type == 'latest'
+    @result = @products.per(@per_page)
+    context['products'] = @products.per(@per_page)
 
-    end
-
-    if context['capture_variable']
-      context[context['capture_variable']] = @products.per(@per_page)
-    else
-      context['products'] = @products.per(@per_page)
-    end
-
-    ''
+    super(context)
   end
 end
 
@@ -169,6 +156,7 @@ class PromoCount < Liquid::Tag
 
   def render(context)
     Spree::Promotion.count
+    super(context)
   end
 end
 
@@ -180,7 +168,8 @@ Liquid::Template.register_tag('promotion_count', PromoCount)
 class SpreeSearchForm < Liquid::Tag
 
   def render(context)
-    context.registers[:action_view].render(:partial => 'spree/shared/search')
+    @result = context.registers[:action_view].render(:partial => 'spree/shared/search')
+    super(context)
   end
 end
 
@@ -193,12 +182,12 @@ class ProductsFilters < Liquid::Tag
     template = context.registers[:action_view]
     filters = context['taxon'] ? context['taxon'].source.applicable_filters : [::Spree::ProductFilters.all_taxons]
     template.params[:search] ||= {}
-    context['filters'] = filters.map{|filter|
-      filter[:labels] || filter[:conds].map {|m,c| [m,m]}
+    @result = context['filters'] = filters.map { |filter|
+      filter[:labels] || filter[:conds].map { |m, c| [m, m] }
       filter[:inputs] = []
       next if filter[:labels].empty?
-      filter[:labels] = filter[:labels].map do |nm,val|
-        label = "#{filter[:name]}_#{nm}".gsub(/\s+/,'_')
+      filter[:labels] = filter[:labels].map do |nm, val|
+        label = "#{filter[:name]}_#{nm}".gsub(/\s+/, '_')
         filter[:inputs] << template.tag(
             :input,
             :type => 'checkbox',
@@ -213,6 +202,7 @@ class ProductsFilters < Liquid::Tag
       end
       filter.stringify_keys
     }
+    super(context)
   end
 end
 
