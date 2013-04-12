@@ -90,3 +90,30 @@ end
 Liquid::Template.register_tag('recent_blog_posts', RecentBlogPosts)
 
 ########################################################################################################################
+
+class PopularBlogPosts < Liquid::Tag
+  QuotedString                = /"[^"]*"|'[^']*'/
+  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
+  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
+
+  def initialize(tag_name, markup, tokens)
+    unless markup.empty?
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
+      end
+    end
+    super
+  end
+
+  def render(context)
+    return unless !@attributes.empty? and @attributes.has_key? 'count'
+    @result = Refinery::Blog::Post.popular(@attributes['count'])
+    context['recent_posts'] = @result
+    super(context)
+  end
+end
+
+Liquid::Template.register_tag('popular_blog_posts', PopularBlogPosts)
+
+########################################################################################################################
