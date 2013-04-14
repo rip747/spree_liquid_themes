@@ -27,6 +27,9 @@ module Liquid
     def render(context)
       context.scopes.last['capture_variable'] = @to
       render_all(@nodelist, context)
+      if  context[context['capture_variable']].nil? and !@nodelist.empty?
+        context[context['capture_variable']] = context[@nodelist.first.name]
+      end
       context.scopes.last.except!('capture_variable')
       ''
     end

@@ -11,7 +11,8 @@ class Refinery::PagePartDrop < Clot::BaseDrop
   end
 
   def body
-    liquid = Liquid::Template.parse @source.body
+    return if !@source.body.nil?
+    liquid = Liquid::Template.parse @source.body.html_safe
     liquid.render(@context.environments[0])
   end
 

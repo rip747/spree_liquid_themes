@@ -5,13 +5,13 @@ class Refinery::Blog::PostDrop < Clot::BaseDrop
                             :comments, :tags]
 
   def body
+    return if @source.body.nil?
     liquid = Liquid::Template.parse @source.body.html_safe
     liquid.render(@context.environments[0])
   end
 
   def title
-    liquid = Liquid::Template.parse @source.title.html_safe
-    liquid.render(@context.environments[0])
+    @source.title
   end
 
   def live

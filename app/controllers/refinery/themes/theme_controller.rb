@@ -13,9 +13,8 @@ module Refinery
         file_path = File.join(Refinery::Themes::Theme.theme_path, "assets", params[:mime_type], "#{params[:file_path]}.#{params[:format]}")
 
         if File.exists? file_path
-          file_type = Mime::Type.lookup_by_extension(File.extname(file_path)[1..-1])
-          send_file file_path, :type => file_type, :disposition => "inline", :stream => false
-          #send_data IO.read(file_path), :disposition => "inline", :stream => false
+          #file_type = Mime::Type.lookup_by_extension(File.extname(file_path)[1..-1])
+          send_file file_path,  :disposition => "inline", :stream => false
         else
           render :text => "Not Found", :status => 404
         end
