@@ -3,7 +3,7 @@ ActionView::Template.register_template_handler :liquid, ActionView::Template::Ha
 
 #ActionController::Base.prepend_view_path  Refinery::Themes::Theme.theme_path.join("views")
 
-Rails.application.config.assets.precompile += [/(^[^_\/]|\/[^_])[^\/]*$/] #[ /\A[^\/\\]+\.(css|js)$/i ]
+#Rails.application.config.assets.precompile += [/(^[^_\/]|\/[^_])[^\/]*$/] #[ /\A[^\/\\]+\.(css|js)$/i ]
 
 Rails.application.config.assets.paths.prepend Refinery::Themes::Theme.theme_path.join("assets/fonts").to_s
 Rails.application.config.assets.paths.prepend Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
