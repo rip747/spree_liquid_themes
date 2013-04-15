@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/shoponrails/spreefinery_themes.png)](https://codeclimate.com/github/shoponrails/spreefinery_themes)
+
 SpreeFinery
 ==============
 
