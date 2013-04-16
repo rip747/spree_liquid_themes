@@ -20,7 +20,6 @@ Liquid::Template.register_tag('cache', Cacher)
 ########################################################################################################################
 
 class ImageTag < Liquid::Tag
-
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
       if markup =~ /url:([*.]+)/
@@ -40,11 +39,7 @@ Liquid::Template.register_tag('image_tag', ImageTag)
 
 #######################################################################################################################
 class Flash < Liquid::Tag
-  QuotedString                = /"[^"]*"|'[^']*'/
-  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
-  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
-
-  def initialize(tag_name, markup, tokens)
+    def initialize(tag_name, markup, tokens)
     unless markup.empty?
       @attributes = {}
       markup.scan(Liquid::TagAttributes) do |key, value|
@@ -64,11 +59,7 @@ Liquid::Template.register_tag('flash', Flash)
 #######################################################################################################################
 
 class TagBuilder < Liquid::Tag
-  QuotedString                = /"[^"]*"|'[^']*'/
-  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
-  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
-
-  def initialize(tag_name, markup, tokens)
+   def initialize(tag_name, markup, tokens)
     unless markup.empty?
       @attributes = {}
       markup.scan(Liquid::TagAttributes) do |key, value|
@@ -93,10 +84,6 @@ Liquid::Template.register_tag('tag_builder', TagBuilder)
 
 class Paginator < Liquid::Tag
 
-  QuotedString                = /"[^"]*"|'[^']*'/
-  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
-  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
-
   def initialize(tag_name, markup, tokens)
     unless markup.empty?
       @attributes = {}
@@ -117,9 +104,10 @@ Liquid::Template.register_tag('paginator', Paginator)
 #########################################################################################################################
 
 class UrlHelper < Liquid::Tag
-  QuotedString                = /"[^"]*"|'[^']*'/
-  QuotedFragment              = /#{QuotedString}|(?:[^\s,\|'"]|#{QuotedString})+/o
-  TagAttributes               = /(\w+)\s*\:\s*(#{QuotedFragment})/o
+# sample usage:
+# <a href="{% url_helper product_path, product %}">{{ product.name }}</a>
+# product_path - rails helper
+# product - AR-object
 
   include Clot::TagHelper
 
@@ -159,4 +147,36 @@ end
 
 Liquid::Template.register_tag('url_helper', UrlHelper)
 
-#############################################################################################################################################################################################################################################
+########################################################################################################################
+class InGroupsOf < Liquid::Tag
+# example usage:
+#  {% capture_variable products %}{% get_products per_page:50 %}{% endcapture_variable %}
+#  {% capture_variable products_groups %}{% in_groups_of collection:products, count:5 %}{% endcapture_variable %}
+#  {% for group in products_groups %}
+#    {% for product in group %}
+#      <li class="product-item">{{ product.name }}</li>
+#    {% endfor %}
+#    <li class="line_divider"></li>
+#  {% endfor %}
+
+  def initialize(tag_name, markup, tokens)
+    unless markup.empty?
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
+      end
+
+      @attributes['count'] ||= 1
+    end
+    super
+  end
+
+  def render(context)
+    return unless @attributes.has_key? 'collection' or !@attributes['collection'].empty?
+    @result = context[@attributes['collection']].in_groups_of(@attributes['count'].to_i, false)
+    super(context)
+  end
+end
+
+Liquid::Template.register_tag('in_groups_of', InGroupsOf)
+########################################################################################################################

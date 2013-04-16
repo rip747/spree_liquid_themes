@@ -29,6 +29,7 @@ module Refinery
           FileUtils.rm_rf(Rails.root.join('public', 'themes')) if File.exist?(Rails.root.join('public', 'themes'))
           ::Refinery::Setting.set(:current_theme, params[:key])
 
+          Rails.application.config.assets.prepend Refinery::Themes::Theme.theme_path.join("assets/fonts").to_s
           Rails.application.config.assets.prepend Refinery::Themes::Theme.theme_path.join("assets/javascripts").to_s
           Rails.application.config.assets.prepend Refinery::Themes::Theme.theme_path.join("assets/stylesheets").to_s
           Rails.application.config.assets.prepend Refinery::Themes::Theme.theme_path.join("assets/images").to_s
